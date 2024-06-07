@@ -1,5 +1,54 @@
 ---
 title: 'Facial Recognition Agent'
-description: 'Mintlify gives you complete control over the look and feel of your documentation using the mint.json file'
+description: 'The `FacialRecognitionAgent` handles facial recognition tasks on images.'
 icon: 'robot'
 ---
+
+## Properties
+### Parameters
+
+The `FacialRecognitionAgent` accepts 1 optional argument: 
+
+```
+FacialRecognitionAgent(model(Optional))
+```
+
+<ResponseField name="model" type="MultimodalLLM" required>
+  **The selected model.** All supported `MultimodalLLM` models can be found below: 
+  <Expandable title="Supported MultimodalLLMs">
+    <ResponseField name="GPT4Vision()" type="MultimodalLLM (Default)">
+      Supports `gpt-4-turbo` , `gpt-4o` .
+    </ResponseField>
+    <ResponseField name="Claude()" type="MultimodalLLM">
+      Supports `claude-3-opus-20240229` , `claude-3-haiku-20240307` , `claude-3-sonnet-20240229` .
+    </ResponseField>
+    <ResponseField name="Gemini()" type="MultimodalLLM">
+      Supports `gemini-pro-vision` .
+    </ResponseField>
+    <ResponseField name="QwenVL()" type="MultimodalLLM">
+      Supports `qwen-vl-chat` .
+    </ResponseField>
+
+  </Expandable>
+</ResponseField>
+
+
+### Example
+Here is an example of the `FacialRecognitionAgent` as part of a Workflow for event photography tagging.
+
+```python example.py
+image_path = "./examples/portrait.jpg"
+image = Image.open(image_path)
+workflow = Workflow()
+workflow.add_step(FacialRecognitionAgent(model=Gemini()))
+workflow.execute(image)
+```
+
+
+## Use Cases
+The `FacialRecognitionAgent` is designed serve use cases that require identifying individuals within images:
+
+> - Security
+> - Marketing
+> - Identification
+> - Public Safety

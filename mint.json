@@ -45,11 +45,17 @@
   ],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "Overview",
       "pages": [
         "introduction",
-        "quickstart",
-        "development"
+        "getting-set-up",
+        "contributing"
+      ]
+    },
+    {
+      "group": "Workflow",
+      "pages": [
+        "workflow/About"
       ]
     },
     {

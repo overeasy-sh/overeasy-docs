@@ -1,5 +1,45 @@
 ---
 title: 'Dense Captioning Agent'
-description: 'Text, title, and styling in standard markdown'
+description: 'The `DenseCaptioningAgent` generates detailed textual descriptions of images.'
 icon: 'robot'
 ---
+
+## Properties
+### Parameters
+
+The `DenseCaptioningAgent` accepts 1 optional argument: 
+
+```
+DenseCaptioningAgent(model(Optional))
+```
+
+<ResponseField name="model" type="MultimodalLLM" required>
+  **The selected model.** All supported `MultimodalLLM` models can be found below: 
+  <Expandable title="Supported MultimodalLLMs">
+    <ResponseField name="GPT4Vision()" type="MultimodalLLM (Default)">
+      Supports `gpt-4-turbo` , `gpt-4o` .
+    </ResponseField>
+    <ResponseField name="Claude()" type="MultimodalLLM">
+      Supports `claude-3-opus-20240229` , `claude-3-haiku-20240307` , `claude-3-sonnet-20240229` .
+    </ResponseField>
+    <ResponseField name="Gemini()" type="MultimodalLLM">
+      Supports `gemini-pro-vision` .
+    </ResponseField>
+    <ResponseField name="QwenVL()" type="MultimodalLLM">
+      Supports `qwen-vl-chat` .
+    </ResponseField>
+
+  </Expandable>
+</ResponseField>
+
+
+### Example
+Here is an example of the `DenseCaptioningAgent` being used to generate a caption for a graph.
+
+```python example.py
+image_path = "./examples/figure.jpg"
+image = Image.open(image_path)
+workflow = Workflow()
+workflow.add_step(DenseCaptioningAgent(model=Gemini()))
+workflow.execute(image)
+```

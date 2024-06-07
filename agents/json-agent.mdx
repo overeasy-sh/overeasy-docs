@@ -1,5 +1,50 @@
 ---
 title: 'JSON Agent'
-description: 'Mintlify gives you complete control over the look and feel of your documentation using the mint.json file'
+description: 'The `JSONAgent` extracts structured information from images.'
 icon: 'robot'
 ---
+
+## Properties
+### Parameters
+
+The `JSONAgent` accepts 2 arguments: 
+
+```
+JSONAgent(query, model(Optional))
+```
+
+<ResponseField name="query" required>
+  **A string that represents the prompt used to guide the model's analysis of the image.**
+
+  > A node on formatting `JSONAgent` queries:
+  > 
+</ResponseField>
+
+<ResponseField name="model" type="MultimodalLLM">
+  **The selected model.** 
+  
+  All supported `MultimodalLLM` models can be found below: 
+  <Expandable title="Supported MultimodalLLMs">
+    <ResponseField name="QwenVL()" type="MultimodalLLM (Default)">
+      Supports `qwen-vl-chat` .
+    </ResponseField>
+    <ResponseField name="GPT4Vision()" type="MultimodalLLM">
+      Supports `gpt-4-turbo` , `gpt-4o` .
+    </ResponseField>
+    <ResponseField name="Claude()" type="MultimodalLLM">
+      Supports `claude-3-opus-20240229` , `claude-3-haiku-20240307` , `claude-3-sonnet-20240229` .
+    </ResponseField>
+    <ResponseField name="Gemini()" type="MultimodalLLM">
+      Supports `gemini-pro-vision` .
+    </ResponseField>
+
+  </Expandable>
+</ResponseField>
+
+
+### Example
+Here is an example of the `JSON Agent` being used.
+
+```python example.py
+//TODO
+```
