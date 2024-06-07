@@ -11,7 +11,7 @@ icon: 'robot'
 The `BoundingBoxSelectAgent` accepts three arguments: 
 
 ```
-BoundingBoxSelectAgent(classes, split, model)
+BoundingBoxSelectAgent(classes, split, model(Optional))
 ```
 
 
@@ -34,7 +34,7 @@ A flag that determines whether the image should be split based on detections.
 </ResponseField>
 
 <ResponseField name="model" type="BoundingBoxModel">
-Represents the model used to perform the detection task and takes an instance of `BoundingBoxModel`. If left unspecified, this parameter defaults to the `GroundingDINO` Model. 
+Represents the model used to perform the detection task and takes an instance of `BoundingBoxModel`. If left unspecified, this parameter defaults to the `GroundingDINO()` model. 
   
 The supported `BoundingBoxModel` models can be found below:
   <Expandable title="Supported MultimodalLLMs">
@@ -53,7 +53,7 @@ The supported `BoundingBoxModel` models can be found below:
 
 ### Example
 
-Here is an example of the BoundingBoxSelectAgent as part of a `Workflow` for counting hardhats.
+Here is an example of the `BoundingBoxSelectAgent` as part of a `Workflow` for counting hardhats.
 
 ```python example.py
 workflow.add_step(BoundingBoxSelectAgent(classes=["construction hat"], model=GroundingDINO(), split=True))
@@ -68,6 +68,3 @@ workflow.add_step(BoundingBoxSelectAgent(classes=["construction hat"], model=Gro
     See Full Example
   </Card>
 </CardGroup>
-
-## Use Cases
-The Agent is useful for labeling Computer Vision Datasets for Object Detection.

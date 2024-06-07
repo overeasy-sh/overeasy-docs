@@ -29,7 +29,7 @@ Here are a few illustrative examples:
 <ResponseField name="model" type="MultimodalLLM" required>
   **The selected model.** All supported `MultimodalLLM` models can be found below: 
   <Expandable title="Supported MultimodalLLMs">
-    <ResponseField name="GPT4V()" type="MultimodalLLM (Default)">
+    <ResponseField name="GPT4Vision()" type="MultimodalLLM (Default)">
       Supports `gpt-4-turbo` , `gpt-4o` .
     </ResponseField>
     <ResponseField name="Claude()" type="MultimodalLLM">
@@ -65,8 +65,8 @@ workflow.add_step(VisionPromptAgent("Is the egg damaged in anyway?",  model=GPT4
 ## Use Cases
 The `VisionPromptAgent` is designed to handle use cases where an image needs to be analyzed or interpreted in the context of a specific textual query:
 
-- Image Captioning
-- Contextual Questions
-- Sentiment Analysis
-- Image-based Fact Verification
-- Search + Retrieval on Images
+> - Image Captioning
+> - Contextual Questions
+> - Sentiment Analysis
+> - Image-based Fact Verification
+> - Search + Retrieval on Images
