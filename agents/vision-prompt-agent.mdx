@@ -1,0 +1,59 @@
+---
+title: 'Vision Prompt Agent'
+description: 'The `VisionPromptAgent` handles image-based queries using a multimodal language model.'
+icon: 'robot'
+---
+
+## Properties
+### Parameters
+
+The `VisionPromptAgent` accepts two arguments: 
+
+```
+BoundingBoxSelectAgent(query, model)
+```
+
+<ResponseField name="query" type="string" required>
+A string representing the prompt to be used when analyzing the image.
+
+Example: Given an image of an X-ray, the text query could be `Is there a fracture in the bone?`
+
+</ResponseField>
+
+<ResponseField name="model" type="MultimodalLLM" required>
+  The selected model. 
+
+  The supported `MultimodalLLM` models can be found below: 
+  <Expandable title="Supported MultimodalLLMs">
+    <ResponseField name="GPT4Vision" type="MultimodalLLM (Default)">
+      supports `gpt-4-turbo` , `gpt-4o` .
+    </ResponseField>
+    <ResponseField name="Claude" type="MultimodalLLM">
+      supports `claude-3-opus-20240229` , `claude-3-haiku-20240307` , `claude-3-sonnet-20240229` .
+    </ResponseField>
+    <ResponseField name="Gemini" type="MultimodalLLM">
+      supports `gemini-pro-vision` .
+    </ResponseField>
+    <ResponseField name="QwenVL" type="MultimodalLLM">
+      supports `qwen-vl-chat` .
+    </ResponseField>
+
+  </Expandable>
+</ResponseField>
+
+### Example
+Here is an example of the `VisionPromptAgent` as part of a Workflow for detecting damage to an egg.
+
+```python example.py
+workflow.add_step(VisionPromptAgent("Is the egg damaged in anyway?",  model=GPT4Vision()))
+```
+
+<CardGroup cols={2}>
+  <Card
+    title="Construction Example"
+    icon="circle-info"
+    href="https://overeasy.sh/docs/examples/construction-example"
+  >
+    See Full Example
+  </Card>
+</CardGroup>

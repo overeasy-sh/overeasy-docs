@@ -1,18 +1,18 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Overeasy",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/logo/dark-mode-full-logo.svg",
+    "light": "/logo/light-mode-full-logo.svg"
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
+    "primary": "#6a69e9",
+    "light": "#9796f0",
+    "dark": "#2a2a5d",
     "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+      "from": "#5554ba",
+      "to": "#a6a5f2"
     }
   },
   "topbarLinks": [
@@ -32,11 +32,6 @@
     }
   ],
   "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
     {
       "name": "Community",
       "icon": "slack",
@@ -58,14 +53,22 @@
       ]
     },
     {
-      "group": "Essentials",
+      "group": "Agents",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "agents/bounding-box-select-agent",
+        "agents/vision-prompt-agent",
+        "agents/dense-captioning-agent",
+        "agents/classification-agent",
+        "agents/ocr-agent",
+        "agents/facial-recognition-agent",
+        "agents/json-agent",
+        "agents/join-agent"
+      ]
+    },
+    {
+      "group": "Examples",
+      "pages": [
+        "examples/construction-example"
       ]
     },
     {
@@ -84,8 +87,8 @@
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "x": "https://twitter.com/tryovereasy",
+    "github": "https://github.com/overeasy-sh/overeasy",
+    "linkedin": "https://www.linkedin.com/company/overeasy-sh"
   }
 }

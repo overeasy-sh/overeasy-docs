@@ -1,0 +1,66 @@
+---
+title: 'Bounding Box Select Agent'
+description: 'The `BoundingBoxSelectAgent` detects an object in an image and selects its bounding box.'
+icon: 'robot'
+---
+
+## Properties
+
+### Parameters
+
+The `BoundingBoxSelectAgent` accepts three arguments: 
+
+```
+BoundingBoxSelectAgent(classes, split, model)
+```
+
+
+<ResponseField name="classes" type="List[String]" required>
+Specifies the list of objects to detect within an image for the object detection task.
+
+Each object of interest should be described textually as a `String` object within the `classes` list. 
+
+Since a text embedding of the label will be used to identify the objects, a more specific class name will yield a more specific detection. For instance, `"car"` will result in more general detections than `"blue Honda"`.
+
+</ResponseField>
+
+<ResponseField name="split" type="Boolean" required>
+A flag that determines whether the image should be split based on detections.
+
+</ResponseField>
+
+<ResponseField name="model" type="BoundingBoxModel">
+Represents the model used to perform the detection task and takes an instance of `BoundingBoxModel`. If left unspecified, this parameter defaults to the `GroundingDINO` Model. 
+  
+The supported `BoundingBoxModel` models can be found below:
+  <Expandable title="Supported MultimodalLLMs">
+    <ResponseField name="GroundingDINO()" type="BoundingBoxModel (Default)">
+    </ResponseField>
+    <ResponseField name="DETIC()" type="BoundingBoxModel">
+    </ResponseField>
+    <ResponseField name="OwlV2()" type="BoundingBoxModel">
+    </ResponseField>
+    <ResponseField name="YOLOWorld()" type="BoundingBoxModel">
+    </ResponseField>
+
+  </Expandable>
+
+</ResponseField>
+
+### Example
+
+Here is an example of the BoundingBoxSelectAgent as part of a `Workflow` for counting hardhats.
+
+```python example.py
+workflow.add_step(BoundingBoxSelectAgent(classes=["construction hat"], model=GroundingDINO(), split=True))
+```
+
+<CardGroup cols={2}>
+  <Card
+    title="Construction Example"
+    icon="circle-info"
+    href="https://overeasy.sh/docs/examples/construction-example"
+  >
+    See Full Example
+  </Card>
+</CardGroup>
