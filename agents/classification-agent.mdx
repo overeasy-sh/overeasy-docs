@@ -1,66 +1,72 @@
 ---
 title: 'Classification Agent'
-description: 'The navigation field in mint.json defines the pages that go in the navigation menu'
+description: 'The `ClassificationAgent` handles image-based queries.'
 icon: 'robot'
 ---
 
-The navigation menu is the list of links on every website.
+## Properties
+### Parameters
 
-You will likely update `mint.json` every time you add a new page. Pages do not show up automatically.
+The `VisionPromptAgent` accepts two arguments: 
 
-## Navigation syntax
-
-Our navigation syntax is recursive which means you can make nested navigation groups. You don't need to include `.mdx` in page names.
-
-<CodeGroup>
-
-```json Regular Navigation
-"navigation": [
-    {
-        "group": "Getting Started",
-        "pages": ["quickstart"]
-    }
-]
+```
+BoundingBoxSelectAgent(query, model)
 ```
 
-```json Nested Navigation
-"navigation": [
-    {
-        "group": "Getting Started",
-        "pages": [
-            "quickstart",
-            {
-                "group": "Nested Reference Pages",
-                "pages": ["nested-reference-page"]
-            }
-        ]
-    }
-]
+<ResponseField name="query" type="string" required>
+**The prompt used to analyze the image.**
+
+Here are a few illustrative examples: 
+>
+>Given an image of an X-ray scan, `query = "Is there a fracture in the bone?"`
+>
+>Given a frame of security camera footage, `query = "Identify any suspicious activities or individuals in this security camera footage."`
+>
+>Given a photo of a manufactured product, `query = "Inspect this product for any defects or irregularities."`
+
+</ResponseField>
+
+<ResponseField name="model" type="MultimodalLLM" required>
+  **The selected model.** All supported `MultimodalLLM` models can be found below: 
+  <Expandable title="Supported MultimodalLLMs">
+    <ResponseField name="GPT4Vision" type="MultimodalLLM (Default)">
+      Supports `gpt-4-turbo` , `gpt-4o` .
+    </ResponseField>
+    <ResponseField name="Claude" type="MultimodalLLM">
+      Supports `claude-3-opus-20240229` , `claude-3-haiku-20240307` , `claude-3-sonnet-20240229` .
+    </ResponseField>
+    <ResponseField name="Gemini" type="MultimodalLLM">
+      Supports `gemini-pro-vision` .
+    </ResponseField>
+    <ResponseField name="QwenVL" type="MultimodalLLM">
+      Supports `qwen-vl-chat` .
+    </ResponseField>
+
+  </Expandable>
+</ResponseField>
+
+### Example
+Here is an example of the `VisionPromptAgent` as part of a Workflow for detecting damage to an egg.
+
+```python example.py
+workflow.add_step(VisionPromptAgent("Is the egg damaged in anyway?",  model=GPT4Vision()))
 ```
 
-</CodeGroup>
+<CardGroup cols={2}>
+  <Card
+    title="Egg Carton Example"
+    icon="circle-info"
+    href="https://overeasy.sh/docs/examples/egg-carton-example"
+  >
+    See Full Example
+  </Card>
+</CardGroup>
 
-## Folders
+## Use Cases
+The `VisionPromptAgent` is designed to handle use cases where an image needs to be analyzed or interpreted in the context of a specific textual query:
 
-Simply put your MDX files in folders and update the paths in `mint.json`.
-
-For example, to have a page at `https://yoursite.com/your-folder/your-page` you would make a folder called `your-folder` containing an MDX file called `your-page.mdx`.
-
-<Warning>
-
-You cannot use `api` for the name of a folder unless you nest it inside another folder. Mintlify uses Next.js which reserves the top-level `api` folder for internal server calls. A folder name such as `api-reference` would be accepted.
-
-</Warning>
-
-```json Navigation With Folder
-"navigation": [
-    {
-        "group": "Group Name",
-        "pages": ["your-folder/your-page"]
-    }
-]
-```
-
-## Hidden Pages
-
-MDX files not included in `mint.json` will not show up in the sidebar but are accessible through the search bar and by linking directly to them.
+- Image Captioning
+- Contextual Questions
+- Sentiment Analysis
+- Image-based Fact Verification
+- Search + Retrieval on Images
