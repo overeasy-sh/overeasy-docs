@@ -1,6 +1,6 @@
 ---
 title: 'Vision Prompt Agent'
-description: 'The `VisionPromptAgent` handles image-based queries using a multimodal language model.'
+description: 'The `VisionPromptAgent` handles image-based queries.'
 icon: 'robot'
 ---
 
@@ -14,28 +14,32 @@ BoundingBoxSelectAgent(query, model)
 ```
 
 <ResponseField name="query" type="string" required>
-A string representing the prompt to be used when analyzing the image.
+**The prompt used to analyze the image.**
 
-Example: Given an image of an X-ray, the text query could be `Is there a fracture in the bone?`
+Here are a few illustrative examples: 
+>
+>Given an image of an X-ray scan, `query = "Is there a fracture in the bone?"`
+>
+>Given a frame of security camera footage, `query = "Identify any suspicious activities or individuals in this security camera footage."`
+>
+>Given a photo of a manufactured product, `query = "Inspect this product for any defects or irregularities."`
 
 </ResponseField>
 
 <ResponseField name="model" type="MultimodalLLM" required>
-  The selected model. 
-
-  The supported `MultimodalLLM` models can be found below: 
+  **The selected model.** All supported `MultimodalLLM` models can be found below: 
   <Expandable title="Supported MultimodalLLMs">
     <ResponseField name="GPT4Vision" type="MultimodalLLM (Default)">
-      supports `gpt-4-turbo` , `gpt-4o` .
+      Supports `gpt-4-turbo` , `gpt-4o` .
     </ResponseField>
     <ResponseField name="Claude" type="MultimodalLLM">
-      supports `claude-3-opus-20240229` , `claude-3-haiku-20240307` , `claude-3-sonnet-20240229` .
+      Supports `claude-3-opus-20240229` , `claude-3-haiku-20240307` , `claude-3-sonnet-20240229` .
     </ResponseField>
     <ResponseField name="Gemini" type="MultimodalLLM">
-      supports `gemini-pro-vision` .
+      Supports `gemini-pro-vision` .
     </ResponseField>
     <ResponseField name="QwenVL" type="MultimodalLLM">
-      supports `qwen-vl-chat` .
+      Supports `qwen-vl-chat` .
     </ResponseField>
 
   </Expandable>
@@ -50,10 +54,19 @@ workflow.add_step(VisionPromptAgent("Is the egg damaged in anyway?",  model=GPT4
 
 <CardGroup cols={2}>
   <Card
-    title="Construction Example"
+    title="Egg Carton Example"
     icon="circle-info"
-    href="https://overeasy.sh/docs/examples/construction-example"
+    href="https://overeasy.sh/docs/examples/egg-carton-example"
   >
     See Full Example
   </Card>
 </CardGroup>
+
+## Use Cases
+The `VisionPromptAgent` is designed to handle use cases where an image needs to be analyzed or interpreted in the context of a specific textual query:
+
+- Image Captioning
+- Contextual Questions
+- Sentiment Analysis
+- Image-based Fact Verification
+- Search + Retrieval on Images

@@ -16,11 +16,16 @@ BoundingBoxSelectAgent(classes, split, model)
 
 
 <ResponseField name="classes" type="List[String]" required>
-Specifies the list of objects to detect within an image for the object detection task.
+**Specifies the list of objects to detect within an image for the object detection task.**
 
-Each object of interest should be described textually as a `String` object within the `classes` list. 
+Each object of interest (or "class") should be described textually within the `classes` list. 
 
-Since a text embedding of the label will be used to identify the objects, a more specific class name will yield a more specific detection. For instance, `"car"` will result in more general detections than `"blue Honda"`.
+> Note: Since a text embedding of each class will be used to identify objects, a more specific class name will yield a more specific detection. You should scope your class names accordingly. For instance, a `"car"` class will result in more general detections than a `"blue Honda Accord"` class.
+> 
+> _Ex. Given an image of a street view, you may be interested in detecting cars, trucks, and pedestrians. In this case, it would make sense to define `classes` as_
+> ```python 
+> classes = ["car", "truck", "pedestrian"]
+> ```
 
 </ResponseField>
 
@@ -64,3 +69,6 @@ workflow.add_step(BoundingBoxSelectAgent(classes=["construction hat"], model=Gro
     See Full Example
   </Card>
 </CardGroup>
+
+## Use Cases
+The Agent is useful for labeling Computer Vision Datasets for Object Detection.
