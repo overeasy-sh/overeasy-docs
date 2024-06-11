@@ -4,11 +4,25 @@ description: 'Get started working with the Overeasy library.'
 ---
 
 <Info>
-  **Prerequisite** You should have installed Node.js (version 18.10.0 or
-  higher).
+  **Prerequisite** You should have have a Python version >=3.10 installed.
 </Info>
 
-### **Step 1.** Install Overeasy on your OS:
+
+### **Step 1.** Setup virtual environment(optional):
+It's reccomended to setup Overeasy with a virtual environment.
+
+If you don't already have conda installed you can install it here(https://docs.anaconda.com/free/miniconda/miniconda-install/)
+
+Then to setup an appropriate environment you can use the following command:
+
+
+``` 
+conda create -n overeasy python=3.10
+conda activate overeasy
+```
+
+
+### **Step 2.** Install Overeasy:
 
 <CodeGroup>
 
@@ -18,10 +32,9 @@ pip3 install overeasy
 
 </CodeGroup>
 
-### **Step 2.** Set up your API Keys:
+### **Step 3.** Setup API Keys:
 
-
-To get started, you'll want to set up your `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, and `GEMINI_API_KEY` environment variables. We'll walk you through how to do this.
+If you want to use Multimodal models like GPT4o, Claude or Gemini, you will need to setup the relevant API keys.
 
 **1. Obtain API Keys.**
 
