@@ -4,11 +4,11 @@ description: 'The `BoundingBoxSelectAgent` detects an object in an image and sel
 icon: 'robot'
 ---
 
-## Properties
+## Initialization
 
 ### Parameters
 
-The `BoundingBoxSelectAgent` accepts three arguments: 
+The `BoundingBoxSelectAgent` is initialized with three arguments: 
 
 ```
 BoundingBoxSelectAgent(classes, split, model(Optional))
@@ -18,23 +18,16 @@ BoundingBoxSelectAgent(classes, split, model(Optional))
 <ResponseField name="classes" type="List[String]" required>
 **Specifies the list of objects to detect within an image for the object detection task.**
 
-Each object of interest (or "class") should be described textually within the `classes` list. 
-
-> Note: Since a text embedding of each class will be used to identify objects, a more specific class name will yield a more specific detection. You should scope your class names accordingly. For instance, a `"car"` class will result in more general detections than a `"blue Honda Accord"` class.
-> 
-> _Ex. Given an image of a street view, you may be interested in detecting cars, trucks, and pedestrians. In this case, it would make sense to define `classes` as_
-`classes = ["car", "truck", "pedestrian"].`
-
-
+Each object of interest (or "class") should be included within the `classes` list. 
 </ResponseField>
 
 <ResponseField name="split" type="Boolean" required>
-A flag that determines whether the image should be split based on detections.
+**A flag that determines whether the image should be split based on detections.**
 
 </ResponseField>
 
 <ResponseField name="model" type="BoundingBoxModel">
-Represents the model used to perform the detection task and takes an instance of `BoundingBoxModel`. If left unspecified, this parameter defaults to the `GroundingDINO()` model. 
+**Represents the model used to perform the detection task. If left unspecified, this parameter defaults to `GroundingDINO()`.**
   
 The supported `BoundingBoxModel` models can be found below:
   <Expandable title="Supported MultimodalLLMs">
@@ -51,6 +44,12 @@ The supported `BoundingBoxModel` models can be found below:
 
 </ResponseField>
 
+> Note: Since a text embedding of each class will be used to identify objects, a more specific class name will yield a more specific detection. You should scope your class names accordingly. 
+> 
+> For instance, a `"car"` class will yield more general detections than a `"blue Honda Accord"` class.
+
+
+
 ### Example
 
 Here is an example of the `BoundingBoxSelectAgent` as part of a `Workflow` for counting hardhats.
@@ -63,7 +62,7 @@ workflow.add_step(BoundingBoxSelectAgent(classes=["construction hat"], model=Gro
   <Card
     title="Construction Example"
     icon="circle-info"
-    href="https://overeasy.sh/docs/examples/construction-example"
+    href="https://docs.overeasy.sh/examples/construction-example"
   >
     See Full Example
   </Card>

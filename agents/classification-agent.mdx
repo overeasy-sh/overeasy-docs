@@ -4,11 +4,11 @@ description: 'The `ClassificationAgent` performs image classification.'
 icon: 'robot'
 ---
 
-## Properties
+## Initialization
 
 ### Parameters
 
-The `ClassificationAgent` accepts two arguments: 
+The `ClassificationAgent` is initialized with two arguments: 
 
 ```
 ClassificationAgent(classes, model(Optional))
@@ -20,16 +20,10 @@ ClassificationAgent(classes, model(Optional))
 
 Each object of interest (or "class") should be described textually within the `classes` list. 
 
-> Note: Since a text embedding of each class will be used to when classifying the image, a more specific class name will yield a more specific detection. You should scope your class names accordingly. For instance, a `"car"` class will result in more general detections than a `"blue Honda Accord"` class.
-> 
-> _Ex. Given an image of a street view, you may be interested in detecting cars, trucks, and pedestrians. In this case, it would make sense to define `classes` as_
-`classes = ["car", "truck", "pedestrian"].`
-
-
 </ResponseField>
 
 <ResponseField name="model" type="ClassificationModel">
-Represents the model used to perform the image segmentation task and takes an instance of `ClassificationModel`. If left unspecified, this parameter defaults to the `CLIP()` Model. 
+**Represents the model used to perform the image segmentation task and takes an instance of `ClassificationModel`. If left unspecified, this parameter defaults to the `CLIP()` Model.**
   
 The supported `ClassificationModel` models can be found below:
   <Expandable title="Supported MultimodalLLMs">
@@ -41,6 +35,10 @@ The supported `ClassificationModel` models can be found below:
   </Expandable>
 
 </ResponseField>
+
+> Note: Since a text embedding of each class will be used to when classifying the image, a more specific class name will yield a more specific detection. You should scope your class names accordingly. 
+> 
+> For instance, a `"car"` class will result in more general detections than a `"blue Honda Accord"` class.
 
 ### Example
 

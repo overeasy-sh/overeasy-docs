@@ -4,10 +4,10 @@ description: 'The `JSONAgent` extracts structured information from images.'
 icon: 'robot'
 ---
 
-## Properties
+## Initialization
 ### Parameters
 
-The `JSONAgent` accepts 2 arguments: 
+The `JSONAgent` is initialized with two arguments: 
 
 ```
 JSONAgent(query, model(Optional))
@@ -21,9 +21,7 @@ JSONAgent(query, model(Optional))
 </ResponseField>
 
 <ResponseField name="model" type="MultimodalLLM">
-  **The selected model.** 
-  
-  All supported `MultimodalLLM` models can be found below: 
+  **The selected model.** All supported `MultimodalLLM` models can be found below: 
   <Expandable title="Supported MultimodalLLMs">
     <ResponseField name="QwenVL()" type="MultimodalLLM (Default)">
       Supports `qwen-vl-chat` .

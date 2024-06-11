@@ -1,0 +1,71 @@
+---
+title: 'Binary Choice Agent'
+description: 'The `BinaryChoiceAgent` performs a binary classification.'
+icon: 'robot'
+---
+
+This Agent will analyze the image and query, and determine whether the resulting classification is "yes" or "no".
+
+## Initialization
+
+### Parameters
+
+The `BinaryChoiceAgent` is initialized with two arguments: 
+
+```
+BinaryChoiceAgent(query, model(Optional))
+```
+
+<ResponseField name="query" type="String" required>
+**Specifies the text prompt that will be used to analyze the image.**
+</ResponseField>
+
+<ResponseField name="model" type="MultimodalLLM">
+**Represents the model used to perform the binary classification task.**
+
+If left unspecified, this parameter defaults to the `QwenVL()` Model. The supported `MultimodalLLM` models can be found below:
+  <Expandable title="Supported MultimodalLLMs">
+    <ResponseField name="QwenVL()" type="MultimodalLLM (Default)">
+      Supports `qwen-vl-chat` .
+    </ResponseField>
+    <ResponseField name="GPT4Vision()" type="MultimodalLLM">
+      Supports `gpt-4-turbo` , `gpt-4o` .
+    </ResponseField>
+    <ResponseField name="Claude()" type="MultimodalLLM">
+      Supports `claude-3-opus-20240229` , `claude-3-haiku-20240307` , `claude-3-sonnet-20240229` .
+    </ResponseField>
+    <ResponseField name="Gemini()" type="MultimodalLLM">
+      Supports `gemini-pro-vision` .
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+### Example
+
+Here is an example of the `BinaryChoiceAgent` as part of a `Workflow` for counting hardhats.
+
+```python example.py
+workflow.add_step(BinaryChoiceAgent("Is this person wearing a hardhat?"))
+```
+
+<CardGroup cols={2}>
+  <Card
+    title="Construction Example"
+    icon="circle-info"
+    href="https://docs.overeasy.sh/examples/construction-example"
+  >
+    See Full Example
+  </Card>
+</CardGroup>
+
+### Use Cases
+
+The `BinaryChoiceAgent` operates on use cases that involve posing a yes/no question about the contents of an image.
+
+> - **Sentiment Analysis**: Determine if an image conveys positive or negative sentiment. An example `query` could be: `Is the sentiment of this image positive?`.
+>
+> - **Presence Detection**: Check for the presence of a specific object or feature within an image. An example `query` could be: `Is there a dog in this image?`.
+>
+> - **Quality Control**: Determine if a product satisfies quality standards. An example `query` could be: `Is this product defective?`.
+>
+> - **Content Moderation**: Determine if an image contains inappropriate content. An example `query` could be: `Does this image contain any inappropriate content?`.

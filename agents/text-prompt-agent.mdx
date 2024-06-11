@@ -1,0 +1,57 @@
+---
+title: 'Text Prompt Agent'
+description: 'The `TextPromptAgent` generates responses to text inputs that are augmented with a specific query.'
+icon: 'robot'
+---
+
+## Initialization
+### Parameters
+
+The `TextPromptAgent` is initialized with two arguments: 
+
+```
+TextPromptAgent(query, model(Optional))
+```
+<ResponseField name="query" type="String" required>
+**A string that represents the prompt used to guide the model's analysis of the text.**
+</ResponseField>
+
+<ResponseField name="model" type="Optional[LLM]">
+  **The selected model.** All supported `LLM` models can be found below: 
+  <Expandable title="Supported MultimodalLLMs">
+    <ResponseField name="GPT4Vision()" type="OCRModel (Default)">
+      Supports `gpt-4-turbo` , `gpt-4o` .
+    </ResponseField>
+    <ResponseField name="TextractModel()" type="OCRModel">
+    </ResponseField>
+    <ResponseField name="Claude()" type="OCRModel">
+      Supports `claude-3-opus-20240229` , `claude-3-haiku-20240307` , `claude-3-sonnet-20240229` .
+    </ResponseField>
+    <ResponseField name="Gemini()" type="OCRModel">
+      Supports `gemini-pro-vision` .
+    </ResponseField>
+
+  </Expandable>
+</ResponseField>
+
+### Example
+This simple example demonstrates how the `TextPromptAgent` can be used in customer support to enhance interactions by prompting for additional information.
+
+```python example.py
+from agents import TextPromptAgent, GPT
+
+# Initialize the TextPromptAgent with a specific query to gather more details
+agent = TextPromptAgent(query="Could you specify which features are most important for your use case?", model=GPT())
+
+# Customer's input
+customer_question = "Does your software support real-time collaboration?"
+
+# Execute the agent to get a response
+response = agent.execute(customer_question)
+
+# Print the response
+print("Response from the agent:", response)
+```
+
+## Use Cases
+The `TextPromptAgent` is useful for applications where responses need to be contextually aligned with specific queries or instructions.
