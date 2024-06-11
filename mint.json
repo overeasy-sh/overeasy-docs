@@ -62,47 +62,51 @@
       ]
     },
     {
-      "group": "Image Agents",
+      "group": "Agents",
       "pages": [
-        "agents/image-agents/bounding-box-select-agent",
-        "agents/image-agents/binary-choice-agent",
-        "agents/image-agents/classification-agent",
-        "agents/image-agents/instructor-image-agent",
-        "agents/image-agents/vision-prompt-agent",
-        "agents/image-agents/ocr-agent",
-        "agents/image-agents/dense-captioning-agent",
-        "agents/image-agents/facial-recognition-agent",
-        "agents/image-agents/json-agent"
-      ]
-    }, 
-    {
-      "group": "Text Agents",
-      "pages": [
-        "agents/text-agents/text-prompt-agent",
-        "agents/text-agents/instructor-text-agent"
-      ]
-    },
-    {
-      "group": "Detection Agents",
-      "pages": [
-        "agents/detection-agents/class-map-agent"
-      ]
-    },
-    {
-      "group": "Data Agents",
-      "pages": [
-        "agents/data-agents/to-classification",
-        "agents/data-agents/map-data-agent"
-      ]
-    },
-    {
-      "group": "General Utility Agents",
-      "pages": [
-        "agents/general-utility-agents/join-agent",
-        "agents/general-utility-agents/split-agent"
+        {
+          "group": "Image Agents",
+          "pages": [
+            "agents/image-agents/bounding-box-select-agent",
+            "agents/image-agents/binary-choice-agent",
+            "agents/image-agents/classification-agent",
+            "agents/image-agents/instructor-image-agent",
+            "agents/image-agents/vision-prompt-agent",
+            "agents/image-agents/ocr-agent",
+            "agents/image-agents/dense-captioning-agent",
+            "agents/image-agents/facial-recognition-agent",
+            "agents/image-agents/json-agent"
+          ]
+        }, 
+        {
+          "group": "Text Agents",
+          "pages": [
+            "agents/text-agents/text-prompt-agent",
+            "agents/text-agents/instructor-text-agent"
+          ]
+        },
+        {
+          "group": "Detection Agents",
+          "pages": [
+            "agents/detection-agents/class-map-agent"
+          ]
+        },
+        {
+          "group": "Data Agents",
+          "pages": [
+            "agents/data-agents/to-classification",
+            "agents/data-agents/map-data-agent"
+          ]
+        },
+        {
+          "group": "General Utility Agents",
+          "pages": [
+            "agents/general-utility-agents/join-agent",
+            "agents/general-utility-agents/split-agent"
+          ]
+        }
       ]
     }
-
   ],
   "footerSocials": {
     "x": "https://twitter.com/tryovereasy",
