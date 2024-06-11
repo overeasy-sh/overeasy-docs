@@ -1,0 +1,110 @@
+---
+title: 'Example 1'
+icon: 'book'
+---
+
+## Approach
+
+TODO: EXPLAIN APPROACH HERE
+
+### **Step 1. Import Overeasy Agents**
+
+First, you need to import the necessary components from the Overeasy library, including the Workflow class and any Agents you plan to use. 
+
+```python workflow.py
+from overeasy import Workflow, BoundingBoxSelectAgent, ToClassificationAgent, JoinAgent, SplitAgent, InstructorImageAgent, ClassMapAgent
+```
+
+### **Step 2. Load the Image**
+
+Load the image you want to process. The code below constructs a path to an image named `"construction.jpg"` located in the same directory. It loads this image using Pillow.
+
+```python workflow.py
+from PIL import Image
+
+image = Image.open("./examples/construction_workers.jpg")
+```
+
+### **Step 3. Initialize Workflow**
+
+Instantiate the `Workflow` class with a list of Overeasy Agents, where the order in the list defines the sequence of operations.
+
+For this particular example, we'll need to define a Pydantic `BaseModel` that will be passed into the `InstructorImageAgent`.
+```python example.py
+class PPE(BaseModel):
+    hardhat: bool
+    vest: bool
+    boots: bool
+```
+
+This class will be used to represent personal protective equipment (PPE) with three boolean attributes: `hardhat`, `vest`, and `boots`. Each attribute in this class indicates whether the respective item of PPE is present (True) or not (False).
+
+```python example.py
+workflow = Workflow([
+    BoundingBoxSelectAgent(classes=["person"]),
+    SplitAgent(),
+    InstructorImageAgent(response_model=PPE),
+    ToClassificationAgent(fn=lambda x: "has ppe" if x.hardhat else "no ppe"),
+    JoinAgent()
+])
+```
+
+> Let's break down the Agents in this Workflow.
+> 
+> 1. **`BoundingBoxSelectAgent`:** This Agent is used to detect and select bounding boxes around objects in the image that are classified as "person".
+> 
+> 2. **`SplitAgent`:** This Agent splits the input into multiple parts based on bounding boxes identified in the previous step. Each split now represents an individual person detected in the image.
+> 
+> 3. **`InstructorImageAgent`:** For each person detected, this Agent determines whether they are wearing specific personal protective equipment (PPE) such as a hardhat, vest, and boots. The predictions are structured according to the PPE model, which includes boolean fields for hardhat, vest, and boots.
+> 
+> 4. **`ToClassificationAgent`:** This Agent takes the output from the InstructorImageAgent and further classifies it into two conditions: "has ppe", and "no ppe". This step simplifies the output to whether the person has PPE based on the presence of a hardhat. 
+> 
+> 5. **`JoinAgent`:** This Agent aggregates results from previous steps into a single output.
+
+### **Step 4. Execute the Workflow**
+
+Call the `execute` method of your Workflow with an initial image. This will process the image through all the Agents.
+
+```python workflow.py
+result, graph = workflow.execute(image)
+```
+
+### **Step 5. Visualize Results**
+
+Finally, visualize the results to see the classification and detection outputs. Use the `visualize` method to view a graphical representation of the Workflow execution, including intermediate images and data at each step.
+
+```python workflow.py
+workflow.visualize(graph)
+```
+
+Here's what the output looks like:
+
+
+
+### Full Code
+
+```python workflow.py
+from overeasy import Workflow, BoundingBoxSelectAgent, ToClassificationAgent, JoinAgent, SplitAgent, InstructorImageAgent, ClassMapAgent
+from pydantic import BaseModel
+from PIL import Image
+
+class PPE(BaseModel):
+    hardhat: bool
+    vest: bool
+    boots: bool
+
+
+workflow = Workflow([
+    BoundingBoxSelectAgent(classes=["person"]),
+    SplitAgent(),
+    InstructorImageAgent(response_model=PPE),
+    ToClassificationAgent(fn=lambda x: "has ppe" if x.hardhat else "no ppe"),
+    ClassMapAgent({"has ppe": "has ppe", "no ppe": "no ppe"}),
+    JoinAgent(),
+])
+
+image = Image.open("./examples/construction_workers.jpg")
+result, graph = workflow.execute(image)
+
+workflow.visualize(graph)
+```

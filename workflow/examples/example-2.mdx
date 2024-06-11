@@ -1,0 +1,94 @@
+---
+title: 'Example 2'
+icon: 'book'
+---
+
+## Approach
+
+TODO: EXPLAIN APPROACH HERE
+
+### **Step 1. Import Overeasy Agents**
+
+First, you need to import the necessary components from the Overeasy library, including the Workflow class and any Agents you plan to use. 
+
+```python workflow.py
+from overeasy import Workflow, BoundingBoxSelectAgent, NMSAgent, JoinAgent, SplitAgent, OwlV2, ClassificationAgent, ClassMapAgent
+```
+
+### **Step 2. Load the Image**
+
+Load the image you want to process. The code below constructs a path to an image named `"construction.jpg"` located in the same directory. It loads this image using Pillow.
+
+```python workflow.py
+from PIL import Image
+
+image = Image.open("./examples/construction_workers.jpg")
+```
+
+### **Step 3. Initialize Workflow**
+
+Instantiate the `Workflow` class with a list of Overeasy Agents, where the order in the list defines the sequence of operations.
+
+```python example.py
+workflow = Workflow([
+    BoundingBoxSelectAgent(classes=["person's head"], model=OwlV2()),
+    NMSAgent(iou_threshold=0.5, score_threshold=0),
+    SplitAgent(),
+    ClassificationAgent(classes=["hard hat", "no hard hat"]),
+    ClassMapAgent({"hard hat": "has ppe", "no hard hat": "no ppe"}),
+    JoinAgent(),
+])
+```
+
+> Let's break down the Agents in this Workflow.
+> 
+> 1. **`BoundingBoxSelectAgent`:** This Agent is used to detect and select bounding boxes around objects in the image that are classified as "person".
+> 
+> 2. **`NMSAgent`:** This Agent performs Non-Maximum Suppression (NMS) with an Intersection over Union (IoU) threshold of 0.5 and a score threshold of 0. This means it keeps the bounding box with the highest score and removes any other box that overlaps it by more than 50%.
+> 
+> 3. **`SplitAgent`:** This Agent splits the input into multiple parts based on bounding boxes identified in the previous step. Each split now represents an individual person detected in the image.
+> 
+> 4. **`ClassificationAgent`:** This Agent classifies each detected person's bounding box into one of two categories: "hard hat", or "no hard hat". This step is crucial for determining whether each person is wearing protective headgear.
+> 
+> 5. **`ClassMapAgent`:** This Agent maps results into more generally named categories. It maps the class name "hard hat" to "has ppe", and the class name "no hard hat" to "no ppe". The simplifies the output by categorizing safety compliance in terms of PPE usage.
+> 
+> 6. **`JoinAgent`:** This Agent aggregates results from previous steps into a single output.
+
+### **Step 4. Execute the Workflow**
+
+Call the `execute` method of your Workflow with an initial image. This will process the image through all the Agents.
+
+```python workflow.py
+result, graph = workflow.execute(image)
+```
+
+### **Step 5. Visualize Results**
+
+Finally, visualize the results to see the classification and detection outputs. Use the `visualize` method to view a graphical representation of the Workflow execution, including intermediate images and data at each step.
+
+```python workflow.py
+workflow.visualize(graph)
+```
+
+Here's what the output looks like:
+
+### Full Code
+
+```python workflow.py
+from overeasy import Workflow, BoundingBoxSelectAgent, NMSAgent, JoinAgent, SplitAgent, OwlV2, ClassificationAgent, ClassMapAgent
+from PIL import Image
+
+workflow = Workflow([
+    BoundingBoxSelectAgent(classes=["person's head"], model=OwlV2()),
+    NMSAgent(iou_threshold=0.5, score_threshold=0),
+    SplitAgent(),
+    ClassificationAgent(classes=["hard hat", "no hard hat"]),
+    ClassMapAgent({"hard hat": "has ppe", "no hard hat": "no ppe"}),
+    JoinAgent(),
+])
+
+image = Image.open("./examples/construction_workers.jpg")
+result, graph = workflow.execute(image)
+
+workflow.visualize(graph)
+```
