@@ -39,7 +39,7 @@
   ],
   "navigation": [
     {
-      "group": "Start Here",
+      "group": "Getting Started",
       "pages": [
         "introduction",
         "installation"
@@ -53,12 +53,12 @@
       ]
     },
     {
-      "group": "Example Workflows",
+      "group": "Examples",
       "pages": [
-        "workflow/examples/overview",
-        "workflow/examples/example-1",
-        "workflow/examples/example-2",
-        "workflow/examples/example-3"
+        "examples/overview",
+        "examples/example-1",
+        "examples/example-2",
+        "examples/example-3"
       ]
     },
     {
