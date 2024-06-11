@@ -11,7 +11,7 @@ This approach detects each worker's head, and uses the `ClassificationAgent` to 
 
 First, you need to import the necessary components from the Overeasy library, including the Workflow class and any Agents you plan to use. 
 
-```python workflow.py
+```python example_2.py
 from overeasy import Workflow, BoundingBoxSelectAgent, NMSAgent, JoinAgent, SplitAgent, OwlV2, ClassificationAgent, ClassMapAgent
 ```
 
@@ -19,7 +19,7 @@ from overeasy import Workflow, BoundingBoxSelectAgent, NMSAgent, JoinAgent, Spli
 
 Load the image you want to process. The code below constructs a path to an image named `"construction.jpg"` located in the same directory. It loads this image using Pillow.
 
-```python workflow.py
+```python example_2.py
 from PIL import Image
 
 image = Image.open("./examples/construction_workers.jpg")
@@ -29,7 +29,7 @@ image = Image.open("./examples/construction_workers.jpg")
 
 Instantiate the `Workflow` class with a list of Overeasy Agents, where the order in the list defines the sequence of operations.
 
-```python example.py
+```python example_2.py
 workflow = Workflow([
     BoundingBoxSelectAgent(classes=["person's head"], model=OwlV2()),
     NMSAgent(iou_threshold=0.5, score_threshold=0),
@@ -58,7 +58,7 @@ workflow = Workflow([
 
 Call the `execute` method of your Workflow with an initial image. This will process the image through all the Agents.
 
-```python workflow.py
+```python example_2.py
 result, graph = workflow.execute(image)
 ```
 
@@ -66,7 +66,7 @@ result, graph = workflow.execute(image)
 
 Finally, visualize the results to see the classification and detection outputs. Use the `visualize` method to view a graphical representation of the Workflow execution, including intermediate images and data at each step.
 
-```python workflow.py
+```python example_2.py
 workflow.visualize(graph)
 ```
 
@@ -74,7 +74,7 @@ Here's what the output looks like:
 
 ### Full Code
 
-```python workflow.py
+```python example_2.py
 from overeasy import Workflow, BoundingBoxSelectAgent, NMSAgent, JoinAgent, SplitAgent, OwlV2, ClassificationAgent, ClassMapAgent
 from PIL import Image
 

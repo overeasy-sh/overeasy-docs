@@ -11,7 +11,7 @@ This approach uses the `InstructorImageAgent` to check for PPE, and uses a custo
 
 First, you need to import the necessary components from the Overeasy library, including the Workflow class and any Agents you plan to use. 
 
-```python workflow.py
+```python example_1.py
 from overeasy import Workflow, BoundingBoxSelectAgent, ToClassificationAgent, JoinAgent, SplitAgent, InstructorImageAgent, ClassMapAgent
 ```
 
@@ -19,7 +19,7 @@ from overeasy import Workflow, BoundingBoxSelectAgent, ToClassificationAgent, Jo
 
 Load the image you want to process. The code below constructs a path to an image named `"construction.jpg"` located in the same directory. It loads this image using Pillow.
 
-```python workflow.py
+```python example_1.py
 from PIL import Image
 
 image = Image.open("./examples/construction_workers.jpg")
@@ -30,7 +30,7 @@ image = Image.open("./examples/construction_workers.jpg")
 Instantiate the `Workflow` class with a list of Overeasy Agents, where the order in the list defines the sequence of operations.
 
 For this particular example, we'll need to define a Pydantic `BaseModel` that will be passed into the `InstructorImageAgent`.
-```python example.py
+```python example_1.py
 class PPE(BaseModel):
     hardhat: bool
     vest: bool
@@ -39,7 +39,7 @@ class PPE(BaseModel):
 
 This class will be used to represent personal protective equipment (PPE) with three boolean attributes: `hardhat`, `vest`, and `boots`. Each attribute in this class indicates whether the respective item of PPE is present (True) or not (False).
 
-```python example.py
+```python example_1.py
 workflow = Workflow([
     BoundingBoxSelectAgent(classes=["person"]),
     SplitAgent(),
@@ -83,7 +83,7 @@ Here's what the output looks like:
 
 ### Full Code
 
-```python workflow.py
+```python example_1.py
 from overeasy import Workflow, BoundingBoxSelectAgent, ToClassificationAgent, JoinAgent, SplitAgent, InstructorImageAgent, ClassMapAgent
 from pydantic import BaseModel
 from PIL import Image

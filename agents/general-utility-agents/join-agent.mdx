@@ -1,9 +1,31 @@
 ---
 title: 'Join Agent'
-description: 'The `JoinAgent` combines the results of multiple `Agents`.'
+description: 'The `JoinAgent` combines the results of multiple Agents.'
 icon: 'robot'
 ---
 
+The `JoinAgent` is initialized with no arguments: 
+
+```
+JoinAgent()
+```
+
 ### Overview
 
-The `JoinAgent` is often used in conjunction with the `SplitAgent`. It merges multiple splits of an image into a single node, which is useful in scenarios where you may want to consolidate results from different images after a split.
+The `JoinAgent` is used in conjunction with the `SplitAgent`. It merges multiple crops of an image to consolidate results.
+
+Let's take a look at Example 1's Workflow:
+
+```python example_1.py
+workflow = Workflow([
+    BoundingBoxSelectAgent(classes=["person"]),
+    SplitAgent(),
+    InstructorImageAgent(response_model=PPE),
+    ToClassificationAgent(fn=lambda x: "has ppe" if x.hardhat else "no ppe"),
+    JoinAgent(),
+])
+```
+
+In this Workflow, the JoinAgent merges the results from individual processing back into a single output. After each detected person in the image has been individually asscessed for PPE by the `InstructorImageAgent` and classified by the `ToClassificationAgent`, the `JoinAgent` reassembles individual results into a unified format.
+
+This gathers a comprehensive output that reflects the PPE status of all detected persons in the original image.
