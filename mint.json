@@ -55,7 +55,7 @@
     {
       "group": "Example Workflows",
       "pages": [
-        "workflow/examples/overview",
+        "workflow/overview",
         "workflow/examples/example-1",
         "workflow/examples/example-2",
         "workflow/examples/example-3"
