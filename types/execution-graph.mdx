@@ -1,0 +1,54 @@
+---
+title: '🔗 Execution Graph'
+description: 'Execution Graphs manage and visualize the sequence of image processing tasks'
+---
+import Underline from '/snippets/underline.mdx';
+import UnderlineMargin from '/snippets/underline-margin.mdx';
+
+## Overview
+
+
+An `ExecutionGraph` tracks the relationships between different [`ExecutionNode`](/execution-node) instances, representing the entire workflow's execution.
+The execution graph is a directed acyclic graph (DAG) of nodes, where each node represents an image processing task.
+Each layer of the graph represents an operation done by a specific agent.
+
+The creation/utlization of the ExecutionGraph is handled by Overeasy under the hood and is mostly just exposed for convenience, debugging, and visualizations.
+
+
+
+### Methods
+
+### ascii_graph
+
+Prints a text-based representation of the graph.
+
+<Underline text="Returns" margin="mt-0" />
+<ResponseField name="ascii_graph" type="None">
+  Outputs the ASCII representation of the graph to the console.
+</ResponseField>
+
+### parent_of
+
+Returns the parent node of a given node. Raises an error if the node has multiple parents.
+
+<Underline text="Arguments" margin="mt-0" />
+<ParamField path="node" type="ExecutionNode">
+  The node for which to find the parent.
+</ParamField>
+
+<UnderlineMargin text="Returns" margin="mt-0" />
+<ResponseField name="parent_node" type="ExecutionNode">
+  The parent node of the given node.
+</ResponseField>
+
+
+
+### top_sort
+
+Performs a topological sort of the graph, returning a list of lists of nodes representing each level of the graph.
+
+<UnderlineMargin text="Returns" margin="mt-0" />
+<ResponseField name="sorted_nodes" type="List[List[ExecutionNode]]">
+  A list of lists of nodes representing each level of the graph.
+</ResponseField>
+

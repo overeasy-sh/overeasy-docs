@@ -43,25 +43,17 @@
     {
       "group": "Types",
       "pages": [
-        "types/about-workflows",
-        "types/about-agents",
-        "types/about-detections",
-        "types/about-execution-graph",
-        "types/about-execution-node"
+        "types/workflows",
+        "types/detections",
+        "types/execution-graph",
+        "types/execution-node"
       ]
     },
-    {
-      "group": "Examples",
-      "pages": [
-        "examples/overview",
-        "examples/example-1",
-        "examples/example-2",
-        "examples/example-3"
-      ]
-    },
+
     {
       "group": "Agents",
       "pages": [
+        "types/agents",
         {
           "group": "Image Agents",
           "pages": [
@@ -98,7 +90,18 @@
         },
         "agents/general-utility-agents/join-split-agent"
       ]
+    },
+
+    {
+      "group": "Examples",
+      "pages": [
+        "examples/overview",
+        "examples/example-1",
+        "examples/example-2",
+        "examples/example-3"
+      ]
     }
+
   ],
   "footerSocials": {
     "x": "https://twitter.com/tryovereasy",
