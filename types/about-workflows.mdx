@@ -1,0 +1,95 @@
+---
+title: '🧩 Workflows'
+description: 'Workflows allow you to chain multiple visual agents'
+---
+import Underline from '/snippets/underline.mdx';
+import UnderlineMargin from '/snippets/underline-margin.mdx';
+
+## Overview
+
+The `Workflow` class provides a framework for executing and visualizing a sequence of image processing steps using various agents.
+Workflows allow you to sequentially chain agents together to process images.
+
+## Params
+<ParamField path="steps" type="List[Agent]">
+  A **immutable** list of agents to serially execute
+</ParamField>
+
+
+## Example
+
+```
+workflow = Workflow([
+    BoundingBoxSelectAgent(classes=["face"]),
+    SplitAgent(),
+    ClassificationAgent(classes=["glasses", "no glasses"])
+])
+```
+
+
+
+## Methods
+
+### Workflow.execute 
+Executes the workflow on the given input image and returns the final results and the execution graph.
+
+<Underline text="Arguments" margin="mt-0" />
+
+<ParamField path="input_image" type="PIL.Image.Image">
+  The input image to be processed by the workflow.
+</ParamField>
+
+<UnderlineMargin text="Returns" margin="mt-0" />
+<ResponseField name="result, graph" type="Tuple[List[ExecutionNode], ExecutionGraph]">
+  A tuple containing the final execution nodes and the execution graph.
+</ResponseField>
+
+
+### Workflow.visualize
+
+Visualizes the workflow using the Gradio library, displaying each agent's inputs and outputs in a structured format.
+
+<Underline text="Arguments" margin="mt-0" />
+
+<ParamField path="graph" type="ExecutionGraph">
+  An `ExecutionGraph` instance representing the execution graph of the workflow.
+</ParamField>
+
+<UnderlineMargin text="Returns" margin="mt-0" />
+  Spawns a gradio instance that runs until it is closed.
+
+
+
+## Example Usage
+
+```python
+from PIL import Image
+input_image = Image.open("path/to/image.jpg")
+
+# Create a workflow
+workflow = Workflow(steps=[
+    BoundingBoxSelectAgent(classes=["person"]),
+    DenseCaptioningAgent(),
+    ClassificationAgent(classes=["cat", "dog"])
+])
+
+# Execute the workflow on the image
+output_nodes, graph = workflow.execute(input_image)
+
+# Visualize the workflow
+workflow.visualize(graph)
+```
+
+### More Examples
+To get acquainted with constructing your own Overeasy Workflows, take a look at a few examples we've provided. These examples will provide practical insights into the setup, execution, and management of Workflows, helping you to understand how to integrate different Agents effectively.
+
+<CardGroup cols={3}>
+  <Card
+    title="Example Workflows"
+    icon="circle-info"
+    href="https://docs.overeasy.sh/workflow/examples/overview"
+  >
+    See Full Example
+  </Card>
+
+</CardGroup>
