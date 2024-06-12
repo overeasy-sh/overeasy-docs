@@ -44,7 +44,10 @@
       "group": "Types",
       "pages": [
         "types/about-workflows",
-        "types/about-agents"
+        "types/about-agents",
+        "types/about-detections",
+        "types/about-execution-graph",
+        "types/about-execution-node"
       ]
     },
     {

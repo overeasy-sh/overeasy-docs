@@ -1,0 +1,43 @@
+---
+title: '🖼️ Execution Node'
+description: 'Execution Nodes represent individual steps in image processing workflows'
+---
+
+## Overview
+
+The `ExecutionNode` class is crucial for representing a single step in the workflow of image processing tasks. It encapsulates the image, the data processed at this stage, and optionally, a reference to the parent detection.
+
+### Attributes
+
+- **image**: The input image at this step of the workflow.
+- **data**: The data resulting from processing the image. This could be a set of detections or any other type of data.
+- **parent_detection** (Optional): The detections from the previous step that led to this node.
+
+### Methods
+
+#### data_is_detections
+
+Checks if the data associated with this node is of type `Detections`.
+
+<Underline text="Returns" margin="mt-0" />
+<ResponseField name="is_detections" type="bool">
+  A boolean indicating if the data is of type `Detections`.
+</ResponseField>
+
+#### visualize
+
+Generates a visual representation of the node. If the data is detections, it annotates the image with the detections. Otherwise, it displays the data as text on the image.
+
+<Underline text="Returns" margin="mt-0" />
+<ResponseField name="visualized_image" type="PIL.Image.Image">
+  The image with annotations or data visualization.
+</ResponseField>
+
+#### id
+
+Returns the unique identifier of the node.
+
+<Underline text="Returns" margin="mt-0" />
+<ResponseField name="node_id" type="int">
+  The unique identifier of the node.
+</ResponseField>
