@@ -40,20 +40,29 @@ The supported `ClassificationModel` models can be found below:
 > 
 > For instance, a `"car"` class will result in more general detections than a `"blue Honda Accord"` class.
 
-### Example
-
-Here is an example of the `ClassificationAgent` as part of a `Workflow` for identifying cracked eggs.
+## Example
 
 ```python example.py
-workflow.add_step(ClassificationAgent(classes=["cracked egg", "whole egg", "not egg"]))
+ClassificationAgent(classes=["hard hat", "no hard hat"]), 
 ```
 
-<CardGroup cols={2}>
-  <Card
-    title="Egg Carton Example"
-    icon="circle-info"
-    href="https://overeasy.sh/docs/examples/egg-carton-example"
-  >
-    See Full Example
-  </Card>
-</CardGroup>
+The output from this agent will be an ExecutionNode containing the previous image and the classification result (i.e. either "hard hat" or "no hard hat").
+
+
+
+## Diagram
+
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart TB
+    direction TB
+    subgraph NODE1
+        direction LR
+        I1("IMAGE <img src='/agents//image-agents/images/worker.png';' />") ~~~ D1(DATA)
+    end
+    subgraph NODE2
+        direction LR
+        I2("IMAGE <img src='/agents//image-agents/images/worker.png';' />") ~~~ D2(Detections.CLASSIFICATION)
+    end
+    NODE1 --ClassificationAgent--> NODE2
+```

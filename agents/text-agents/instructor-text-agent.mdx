@@ -42,8 +42,6 @@ from pydantic import BaseModel
 class TrafficAnalysisResponse(BaseModel):
     cars: int
     trucks: int
-    motorcycles: int
-    timestamp: str
 ```
 
 This model expects the analysis to return the counts of different types of vehicles and a timestamp indicating the time of the image capture.
@@ -51,18 +49,22 @@ This model expects the analysis to return the counts of different types of vehic
 **Step 2. Use `InstructorTextAgent`.**
 
 ```python example.py
-from PIL import Image
-from overeasy.agents import InstructorTextAgent
+InstructorTextAgent(response_model=TrafficAnalysisResponse)
+```
 
-# Load an image from a traffic camera
-traffic_image = Image.open("traffic_image.png")
+## Diagram
 
-# Initialize the InstructorTextAgent with the TrafficAnalysisResponse model
-agent = InstructorTextAgent(response_model=TrafficAnalysisResponse)
-
-# Execute the agent to analyze the image
-execution_node = agent.execute(traffic_image)
-
-# Print the structured response
-print(execution_node.data)
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart TB
+    direction TB
+    subgraph NODE1
+        direction LR
+        I1("IMAGE") ~~~ D1(DATA\n&quotThere are five cars and seven trucks in the image.&quot)
+    end
+    subgraph NODE2
+        direction LR
+        I2("IMAGE") ~~~ D2("DATA\n{&quotcars&quot: 5, &quottrucks&quot: 7}")
+    end
+    NODE1 --InstructorTextAgent--> NODE2
 ```

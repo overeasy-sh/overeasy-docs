@@ -45,14 +45,35 @@ Here are a few illustrative examples:
   </Expandable>
 </ResponseField>
 
-### Example
-Here is an example of the `VisionPromptAgent` as part of a Workflow for detecting damage to an egg.
+## Example
+Here is an example of the `VisionPromptAgent` designed for a Workflow to detect damage on an egg.
+
+{/* <Frame>
+![Egg](/agents/image-agents/images/cracked_egg.jpg)
+</Frame> */}
 
 ```python example.py
-workflow.add_step(VisionPromptAgent("Is the egg damaged in anyway?",  model=GPT4Vision()))
+VisionPromptAgent("Is the egg damaged in anyway?",  model=GPT4Vision())
 ```
 
-<CardGroup cols={2}>
+## Diagram
+
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart TB
+    direction TB
+    subgraph NODE1
+        direction LR
+        I1("IMAGE <img src='/agents//image-agents/images/cracked_egg.jpg';' />") ~~~ D1(DATA)
+    end
+    subgraph NODE2
+        direction LR
+        I2("IMAGE <img src='/agents//image-agents/images/cracked_egg.jpg';' />") ~~~ D2("DATA\n "&quotYes, the egg in the image is damaged. The shell\n is cracked, and the contents of the egg have spilled out.&quot"")
+    end
+    NODE1 --VisionPromptAgent--> NODE2
+```
+
+{/* <CardGroup cols={2}>
   <Card
     title="Egg Carton Example"
     icon="circle-info"
@@ -60,13 +81,13 @@ workflow.add_step(VisionPromptAgent("Is the egg damaged in anyway?",  model=GPT4
   >
     See Full Example
   </Card>
-</CardGroup>
+</CardGroup> */}
 
-## Use Cases
+{/* ## Use Cases
 The `VisionPromptAgent` is designed to handle use cases where an image needs to be analyzed or interpreted in the context of a specific textual query:
 
 > - Image Captioning
 > - Contextual Questions
 > - Sentiment Analysis
 > - Image-based Fact Verification
-> - Search + Retrieval on Images
+> - Search + Retrieval on Images */}

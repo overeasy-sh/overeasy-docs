@@ -4,7 +4,7 @@ description: 'The `BinaryChoiceAgent` performs a binary classification.'
 icon: 'robot'
 ---
 
-This Agent will analyze the image and query, and determine whether the resulting classification is "yes" or "no".
+This Agent will analyze the image and query, and determine whether the resulting classification is of the class "yes" or "no".
 
 ## Initialization
 
@@ -40,15 +40,15 @@ If left unspecified, this parameter defaults to the `QwenVL()` Model. The suppor
   </Expandable>
 </ResponseField>
 
-### Example
-
-Here is an example of the `BinaryChoiceAgent` as part of a `Workflow` for counting hardhats.
+## Example
 
 ```python example.py
-workflow.add_step(BinaryChoiceAgent("Is this person wearing a hardhat?"))
+BinaryChoiceAgent("Is this person wearing a hardhat?")
 ```
 
-<CardGroup cols={2}>
+The output from this agent will be an ExecutionNode containing the previous image and the classification result ("yes" or "no").
+
+{/* <CardGroup cols={2}>
   <Card
     title="Construction Example"
     icon="circle-info"
@@ -56,9 +56,26 @@ workflow.add_step(BinaryChoiceAgent("Is this person wearing a hardhat?"))
   >
     See Full Example
   </Card>
-</CardGroup>
+</CardGroup> */}
 
-### Use Cases
+## Diagram
+
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart TB
+    direction TB
+    subgraph NODE1
+        direction LR
+        I1("IMAGE <img src='/agents//image-agents/images/worker.png';' />") ~~~ D1(DATA)
+    end
+    subgraph NODE2
+        direction LR
+        I2("IMAGE <img src='/agents//image-agents/images/worker.png';' />") ~~~ D2(Detections.CLASSIFICATION)
+    end
+    NODE1 --BinaryChoiceAgent--> NODE2
+```
+
+{/* ### Use Cases
 
 The `BinaryChoiceAgent` operates on use cases that involve posing a yes/no question about the contents of an image.
 
@@ -68,4 +85,4 @@ The `BinaryChoiceAgent` operates on use cases that involve posing a yes/no quest
 >
 > - **Quality Control**: Determine if a product satisfies quality standards. An example `query` could be: `Is this product defective?`.
 >
-> - **Content Moderation**: Determine if an image contains inappropriate content. An example `query` could be: `Does this image contain any inappropriate content?`.
+> - **Content Moderation**: Determine if an image contains inappropriate content. An example `query` could be: `Does this image contain any inappropriate content?`. */}

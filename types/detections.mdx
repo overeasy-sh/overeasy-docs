@@ -1,6 +1,249 @@
 ---
-title: '🖼️ Detection'
-description: 'Detections represent bounding box, segmentation, or classification results'
+title: '🔎 Detections'
+description: 'Detections represent bounding box, segmentation, or classification results.'
 ---
 
+## Overview
 
+The `Detections` class encapsulates a wide array of detection data. The class can represent bounding box, segmentation, and classification results.
+
+## Arguments
+
+<ParamField path="detection_type" type="DetectionType" required>
+   Type of detection (`DetectionType.BOUNDING_BOX`, `DetectionType.SEGMENTATION`, or `DetectionType.CLASSIFICATION`).
+</ParamField>
+
+<ParamField path="xyxy" type="np.ndarray[np.float32]" required>
+  Coordinates of bounding boxes `[x1, y1, x2, y2]` for each detection, where (x1, y1) refers to the top left coordinate and (x2, y2) refers to the bottom right coordinate. 
+</ParamField>
+
+<ParamField path="class_ids" type="np.ndarray[np.int32]]" required>
+   Class IDs for each detection, indexing into `classes`.
+</ParamField>
+
+<ParamField path="classes" type="np.ndarray[np.object_]" required>
+   Array of class names, indexed by `class_ids`.
+</ParamField>
+
+<ParamField path="data" type="Dict[str, Union[np.ndarray, List]]">
+   Additional custom data related to detections (Default: empty dictionary).
+</ParamField>
+
+<ParamField path="masks" type="np.ndarray[np.float32]">
+   Segmentation masks for each detection, required for segmentation types.
+</ParamField>
+
+<ParamField path="confidence" type="np.ndarray[np.float32]">
+   Confidence scores for each detection.
+</ParamField>
+
+
+
+## Examples
+
+### Bounding Box Detections
+
+```python
+bounding_box_detections = Detections(
+    xyxy=np.array([[50, 50, 100, 100], [150, 150, 200, 200]]),
+    detection_type=DetectionType.BOUNDING_BOX,
+    class_ids=np.array([0, 1]),
+    classes=np.array(["cat", "dog"]),
+    confidence=np.array([0.9, 0.8])
+)
+```
+
+There are two bounding boxes in this bounding box Detections object: the box with coordinates (50, 50) and (100, 100) is of class "cat" with 90% confidence, and the box with coordinates (150, 150) and (200, 200) is of class "dog" with 80% confidence.
+
+### Classification Detections
+
+```python
+classification_detections = Detections.from_classification(
+    assigned_classes=["apple", "fruit"]
+    all_classes=["apple", "orange", "banana", "fruit", "vegetable"]
+)
+```
+
+A classification detection is created with multiple classifications: "apple" and "fruit". 
+
+The resulting Detections object looks like this:
+
+```python
+Detections(
+      xyxy=np.zeros((len(assigned_classes), 4)),
+      class_ids=np.array([all_classes.index(c) for c in assigned_classes]),
+      classes=np.array(all_classes),
+      detection_type=DetectionType.CLASSIFICATION
+)
+```
+
+### Segmentation Detections
+
+We will support Segmentation detections shortly.
+{/* 
+```python
+segmentation_detections = Detections(
+    xyxy=[[15, 25, 115, 125], [35, 45, 135, 145]],
+    masks=[[[0, 0, 1], [1, 1, 0]], [[0, 1, 0], [1, 0, 1]]],
+    class_ids=[1, 2],
+    classes=["tree", "car"],
+    confidence=[0.95, 0.88],
+    detection_type=DetectionType.SEGMENTATION
+)
+``` */}
+
+## Methods
+
+<ParamField path="Detections.split()">
+  Splits the `Detections` object into a list of `Detections` objects, each containing a single detection.
+
+  **Returns:**
+  - `List['Detections']`: A list of Detections objects, each containing a single detection.
+
+
+   ```python
+   splits = detections.split()
+   ```
+</ParamField>
+
+<ParamField path="Detections.from_classification(assigned_classes)">
+   Creates a `Detections` instance from a list of class names
+
+  **Parameters:**
+  - `assigned_classes` (`List[str]`): The class name(s) that have been assigned to the classification detection.
+  - `all_classes` (`Optional[List[str]]`): List of strings representing all possible class names that can be assigned in the classification detection.
+
+  **Returns:**
+  - `Detections`: A classification Detections object.
+
+
+   ```python
+   classification_detections = Detections.from_classification(
+      assigned_classes=["cat"],
+      all_classes=["cat", "dog", "mouse"]
+   )
+   ```
+</ParamField>
+
+<ParamField path="Detections.from_yolov5(yolov5_results)">
+   Creates a `Detections` instance from a YOLOv5 inference result.
+
+  **Parameters:**
+  - `yolov5_results` (`yolov5.models.common.Detections`): The output Detections instance from YOLOv5.
+
+  **Returns:**
+  - `Detections`: A bounding box Detections object.
+
+
+   ```python
+   import torch
+
+   model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
+   result = model("path/to/image.jpg")
+   detections = Detections.from_yolov5(result)
+   ```
+</ParamField>
+
+<ParamField path="Detections.from_ultralytics(ultralytics_results)">
+   Creates a `Detections` instance from an Ultralytics YOLOv8 inference result.
+
+   **Parameters:**
+   - `ultralytics_results` (`ultralytics.yolo.engine.results.Results`): The output Results instance from YOLOv8.
+
+   **Returns:**
+   - `Detections`: A bounding box or segmentation Detections object.
+
+
+   ```python
+   from ultralytics import YOLO
+
+   model = YOLO('yolov8s.pt')
+   result = model("path/to/image.jpg")[0]
+   detections = Detections.from_ultralytics(result)
+   ```
+</ParamField>
+
+<ParamField path="Detections.empty()">
+   Creates an empty `Detections` object.
+
+  **Returns:**
+  - `Detections`: An empty bounding box Detections object.
+
+
+   ```python
+   empty_detections = Detections.empty()
+   ```
+</ParamField>
+
+<ParamField path="Detections.to_supervision()">
+   Converts the `Detections` instance to a `supervision.Detections` instance.
+
+   **Returns:**
+   - `sv.Detections`: A supervision Detections instance.
+
+   ```python
+   sv_detections = detections.to_supervision()
+   ```
+</ParamField>
+
+
+## Properties
+
+<ParamField path="confidence_scores" type="">
+  Returns the list of confidence scores associated with the detections.
+
+   ```python
+   scores = detections.confidence_scores
+   ```
+</ParamField>
+
+<ParamField path="area" type="">
+
+Returns a NumPy array containing the area of each detection.
+
+Specifically, if segmentation masks are available, a NumPy array containing the area of each mask is returned. Otherwise, a NumPy array containing the area of each bounding box is returned.
+
+   ```python
+   areas = detections.area
+   ```
+</ParamField>
+
+<ParamField path="box_area" type="">
+   Returns a NumPy array containing the area of each bounding box.
+
+   ```python
+   box_areas = detections.box_area
+   ```
+</ParamField>
+
+<ParamField path="class_names" type=""> 
+
+   Return the list of class names associated with the detections.
+
+   ```python
+   names = detections.class_names
+   ```
+</ParamField>
+
+
+## Example
+
+### Creating a Detection from YOLOv5
+
+```python
+import cv2
+import torch
+
+image = cv2.imread("path/to/image.jpg")
+model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
+result = model(image)
+detections = Detections.from_yolov5(result)
+```
+
+### Converting to Supervision
+
+```python
+sv_detections = detections.to_supervision()
+```
+
+This documentation covers the essential usage of the `Detections` class, including creation, manipulation, and conversion of detection data.

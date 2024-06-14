@@ -20,29 +20,41 @@ ToClassificationAgent(fn)
 </ResponseField>
 
 ### Example
-Here is an example of the `VisionPromptAgent` as part of a Workflow for detecting damage to an egg.
+Here's an example classification function:
 
-**Step 1. Define the Classification Function**
-
-```python example.py
-def classify_number(value):
-    if value > 0:
-        return "positive"
-    elif value < 0:
-        return "negative"
+```python
+def classify_length(text):
+    word_count = len(text.split())
+    if word_count > 1000:
+        return "long"
+    elif value > 500:
+        return "medium"
     else:
-        return "zero"
+        return "short"
 ```
 
-**Step 2. Set up to ToClassification Agent**
-
-```python example.py
-from overeasy.agents import ToClassificationAgent, ExecutionNode
-
-# Create an instance of ToClassificationAgent with the classify_number function
-classification_agent = ToClassificationAgent(fn=classify_number)
+```python
+ToClassificationAgent(fn=classify_length)
 ```
 
+## Diagram
+
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart TB
+    direction TB
+    subgraph NODE1
+        direction LR
+        I1("IMAGE") ~~~ D1(DATA)
+    end
+    subgraph NODE2
+        direction LR
+        I2("IMAGE") ~~~ D2(Detections)
+    end
+    NODE1 --ToClassificationAgent--> NODE2
+```
+
+{/* 
 ## Use Cases
 The `ToClassificationAgent` is particularly useful in scenarios where data needs to be categorized into predefined classes for further analysis, decision-making, or visualization. Some example use cases include:
 
@@ -50,4 +62,4 @@ The `ToClassificationAgent` is particularly useful in scenarios where data needs
 > - Sentiment Analysis
 > - Fraud Detection
 > - Diagnostics
-> - Customer Segmentation
+> - Customer Segmentation */}

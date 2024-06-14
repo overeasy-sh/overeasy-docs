@@ -34,12 +34,25 @@ DenseCaptioningAgent(model(Optional))
 
 
 ### Example
-Here is an example of the `DenseCaptioningAgent` being used to generate a caption for a graph.
+Here is an example of the `DenseCaptioningAgent` designed for a Workflow to detect if workers are wearing personal protective equipment (PPE).
 
 ```python example.py
-image_path = "./examples/figure.jpg"
-image = Image.open(image_path)
-workflow = Workflow()
-workflow.add_step(DenseCaptioningAgent(model=Gemini()))
-workflow.execute(image)
+DenseCaptioningAgent(model=Gemini())
+```
+
+## Diagram
+
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart TB
+    direction TB
+    subgraph NODE1
+        direction LR
+        I1("IMAGE <img src='/agents//image-agents/images/worker.png';' />") ~~~ D1(DATA)
+    end
+    subgraph NODE2
+        direction LR
+        I2("IMAGE <img src='/agents//image-agents/images/worker.png';' />") ~~~ D2("DATA\n&quotThis image shows a man from\n behind at a construction site.&quot")
+    end
+    NODE1 --DenseCaptioningAgent--> NODE2
 ```

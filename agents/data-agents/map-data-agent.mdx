@@ -1,5 +1,44 @@
 ---
 title: 'Map Agent'
-description: 'The `MapAgent` ___.'
+description: 'The `MapAgent`.'
 icon: 'robot'
 ---
+
+
+## Initialization
+### Parameters
+
+The `MapAgent` is initialized with 1 argument: 
+
+```
+MapAgent(fn)
+```
+
+<ResponseField name="fn" type="Union[Callable[[Any], str], Callable[[Any], List[str]]]" required>
+**A callable function that takes one argument and returns a value.**
+</ResponseField>
+
+### Example
+Here is an example of the `MapAgent` as part of a Workflow for detecting damage to an egg.
+
+**Step 1. Define the Classification Function**
+
+```python example.py
+def classify_number(value):
+    if value > 0:
+        return "positive"
+    elif value < 0:
+        return "negative"
+    else:
+        return "zero"
+```
+
+**Step 2. Set up to MapAgent Agent**
+
+```python example.py
+# Create an instance of ToClassificationAgent with the classify_number function
+classification_agent = ToClassificationAgent(fn=classify_number)
+```
+
+## Use Cases
+The `MapAgent` 

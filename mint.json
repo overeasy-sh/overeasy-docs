@@ -44,9 +44,9 @@
       "group": "Types",
       "pages": [
         "types/workflows",
-        "types/detections",
+        "types/execution-node",
         "types/execution-graph",
-        "types/execution-node"
+        "types/detections"
       ]
     },
 
@@ -63,9 +63,7 @@
             "agents/image-agents/instructor-image-agent",
             "agents/image-agents/vision-prompt-agent",
             "agents/image-agents/ocr-agent",
-            "agents/image-agents/dense-captioning-agent",
-            "agents/image-agents/facial-recognition-agent",
-            "agents/image-agents/json-agent"
+            "agents/image-agents/dense-captioning-agent"
           ]
         }, 
         {
@@ -78,14 +76,14 @@
         {
           "group": "Detection Agents",
           "pages": [
-            "agents/detection-agents/class-map-agent"
+            "agents/detection-agents/class-map-agent",
+            "agents/detection-agents/nms-agent"
           ]
         },
         {
           "group": "Data Agents",
           "pages": [
-            "agents/data-agents/to-classification",
-            "agents/data-agents/map-data-agent"
+            "agents/data-agents/to-classification"
           ]
         },
         "agents/general-utility-agents/join-split-agent"
@@ -93,12 +91,33 @@
     },
 
     {
+      "group": "Models",
+      "pages": [
+        "types/models",
+        {
+          "group": "Bounding Box",
+          "pages": [
+            "models/bbox/detic",
+            "models/bbox/grounding-dino",
+            "models/bbox/owlv2",
+            "models/bbox/yoloworld"
+          ]
+        }, 
+        {
+          "group": "LLMs",
+          "pages": [
+            "models/LLMs/GPTVision",
+            "models/LLMs/qwenvl"
+          ]
+        }
+      ]
+    },
+
+
+    {
       "group": "Examples",
       "pages": [
-        "examples/overview",
-        "examples/example-1",
-        "examples/example-2",
-        "examples/example-3"
+        "examples/example-construction"
       ]
     }
 

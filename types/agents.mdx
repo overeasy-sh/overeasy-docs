@@ -6,55 +6,89 @@ description: 'Discover Overeasy Agents: Specialized tools for every task.'
 ## Overview
 
 There are 4 main classes of Agents in Overeasy: 
- - **Image Agents** - Operate on a single PIL image input
- - **Text Agents** - Operate on a single text input
- - **Detection Agents** - Operate on a Detection
- - **SplitAgents** - Splits a bounding box Detection into multiple child Nodes/Detections
- - **JoinAgents** - Joins multiple Detections into a single Detection
+- Image Agents
+- Text Agents
+- Detection Agents
+- Join/Split Agents
 
+### **Image Agents**
 
-### Image Agents
+Image Agents operate on a single PIL image input.
+ ```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart LR
+    direction TB
+        subgraph NODE1
+            direction LR
+            I1(Image) ~~~ D1(Data)
+        end
+        subgraph NODE2
+            direction LR
+            I2(Image) ~~~ D2(Data)
+        end
+        NODE1 --ImageAgent--> NODE2
+    
+    style I1 fill:#ECECFD
+```
 
-Image Agents are designed to handle and process image data.
+### **Text Agents** 
+Text Agents operate on a single text input.
 
-> [BoundingBoxSelectAgent]()
-> 
-> [VisionPromptAgent]()
-> 
-> [DenseCaptionAgent]()
-> 
-> [BinaryChoiceAgent]()
-> 
-> [ClassificationAgent]()
-> 
-> [OCRAgent]()
-> 
-> [InstructorImageAgent]()
+ ```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart LR
+    direction TB
+        subgraph NODE1
+            direction LR
+            I1(Image) ~~~ D1(Text)
+        end
+        subgraph NODE2
+            direction LR
+            I2(Image) ~~~ D2(Data)
+        end
+        NODE1 --TextAgent--> NODE2
+    
+    style D1 fill:#ECECFD
+```
 
-### Text Agents
+### **Detection Agents** 
+Detection Agents operate on a single [Detections](https://docs.overeasy.sh/types/about-detections) input.
 
-Text Agents are designed to handle and process text data.
+  ```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart LR
+    direction TB
+        subgraph NODE1
+            direction LR
+            I1(Image) ~~~ D1(Detections)
+        end
+        subgraph NODE2
+            direction LR
+            I2(Image) ~~~ D2(Data)
+        end
+        NODE1 --DetectionAgent--> NODE2
+    
+    style D1 fill:#ECECFD
+```
 
-> [TextPromptAgent]()
-> 
-> [InstructorTextAgent]()
+ ### **Split Agent** 
+ Split Agents split a Bounding Box Detection into multiple child Nodes/Detections.
 
-### Detection Agents
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart TD
+  A(Image, Detections) --- SplitAgent(SplitAgent) --> 1(Crop 1, Detections) & 2(Crop 2, Detections) & 3(Crop 3, Detections)
 
-Detection Agents are specialized to handle detection tasks within images.
+  style SplitAgent fill:#ffffff,stroke:#333,stroke-width:0px
+```
+ 
+ ### **Join Agent** 
+ Join Agents join multiple Detections into a single Detection.
 
-> [ClassMapAgent]()
+ ```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart TD
+  1(Crop 1, Detections) & 2(Crop 2, Detections) & 3(Crop 3, Detections) --- JoinAgent(JoinAgent) --> 4(Image, Detections)
 
-### Data Agents
-
-Data Agents operate on generic data to transform, filter, or process data. They are not restricted to image or text data exclusively.
-
-> [MapDataAgent]()
-> 
-> [ToClassification]()
-
-### Split + Join Agents
-
-General Utility Agents provide utility functions that might be necessary for managing data flow or processing within a system.
-
-> [SplitAgent and JoinAgent]()
+  style JoinAgent fill:#ffffff,stroke:#333,stroke-width:0px
+```

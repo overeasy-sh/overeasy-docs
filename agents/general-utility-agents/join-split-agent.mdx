@@ -13,7 +13,7 @@ JoinAgent()
 
 The `SplitAgent` is used in conjunction with the `JoinAgent`. The `SplitAgent` creates multiple crops of an image, and the `JoinAgent` consolidates the results.
 
-Let's take a look at Example 1's Workflow:
+Let's take a look at a Workflow:
 
 ```python example_1.py
 workflow = Workflow([
@@ -25,9 +25,25 @@ workflow = Workflow([
 ])
 ```
 
+Here's a visualization of the above workflow:
+
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart TD
+  A(Image, None) --BoundingBoxSelectAgent--> B(Image, Detections) --- SplitAgent(SplitAgent) --> 1("Person 1", Detections) & 2("Person 2", Detections) & 3("Person 3", Detections) & 4("Person 4", Detections)
+  1 --InstructorImageAgent--> a(Person 1, Pydantic Object) --ToClassificationAgent--> 1.3(Person 1, Detections)
+  2 --InstructorImageAgent--> b(Person 2, Pydantic Object) --ToClassificationAgent--> 2.3(Person 2, Detections)
+  3 --InstructorImageAgent--> c(Person 3, Pydantic Object) --ToClassificationAgent--> 3.3(Person 3, Detections)
+  4 --InstructorImageAgent--> d(Person 4, Pydantic Object) --ToClassificationAgent--> 4.3(Person 4, Detections)
+  1.3 & 2.3 & 3.3 & 4.3 --- JoinAgent(JoinAgent) --> 5("Image", Detections)
+
+  style SplitAgent fill:#ffffff, stroke-width:0px
+  style JoinAgent fill:#ffffff, stroke-width:0px
+```
+
 ### Split Agent
 
-After identifying the bounding boxes around each "person", the `SplitAgent` separates the detected individuals so that subsequent processing can be applied to each person detection individually.
+After identifying the bounding boxes around each "person", the `SplitAgent` separates the detected individuals into its own branches so that subsequent processing can be applied to each person detection individually.
 
 <Frame caption="The result after bounding box detection">
   <img src="/agents/general-utility-agents/bb.png" />
@@ -39,9 +55,9 @@ After identifying the bounding boxes around each "person", the `SplitAgent` sepa
 
 ### Join Agent
 
-After each person detection in the image has been individually assessed and classified, the `JoinAgent` reassembles the individual results back into a single output.
+After each person detection in the image has been individually assessed and classified, the `JoinAgent` reassembles the individual results back into a single output. The `InstructorImageAgent` and `ToClassificationAgent` steps in the workflow act on each person detection individually after the split.
 
-This gathers a comprehensive output that reflects the PPE status of all detected persons in the original image.
+The final merge gathers a comprehensive output that reflects the PPE status of all detected persons in the original image, combining the results into a single image.
 
 <Frame caption="The result of classifying each person detection">
   <img src="/agents/general-utility-agents/join.png" />

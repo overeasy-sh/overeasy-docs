@@ -38,20 +38,27 @@ TextPromptAgent(query, model(Optional))
 This simple example demonstrates how the `TextPromptAgent` can be used in customer support to enhance interactions by prompting for additional information.
 
 ```python example.py
-from agents import TextPromptAgent, GPT
-
-# Initialize the TextPromptAgent with a specific query to gather more details
-agent = TextPromptAgent(query="Could you specify which features are most important for your use case?", model=GPT())
-
-# Customer's input
-customer_question = "Does your software support real-time collaboration?"
-
-# Execute the agent to get a response
-response = agent.execute(customer_question)
-
-# Print the response
-print("Response from the agent:", response)
+TextPromptAgent(query="Make the description more concise.", model=GPT())
 ```
 
+## Diagram
+
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart TB
+    direction TB
+    subgraph NODE1
+        direction LR
+        I1("IMAGE") ~~~ D1(DATA\n&quotThe image shows a brown chicken egg that has been cracked open.\n The shell is broken into two main pieces, and the egg's contents are\n spilling out onto the surface...&quot)
+    end
+    subgraph NODE2
+        direction LR
+        I2("IMAGE") ~~~ D2("DATA\n&quotThe egg is cracked.&quot")
+    end
+    NODE1 --TextPromptAgent--> NODE2
+```
+
+
+{/* 
 ## Use Cases
-The `TextPromptAgent` is useful for applications where responses need to be contextually aligned with specific queries or instructions.
+The `TextPromptAgent` is useful for applications where responses need to be contextually aligned with specific queries or instructions. */}

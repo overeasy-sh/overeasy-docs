@@ -1,0 +1,132 @@
+---
+title: 'PPE Example'  
+icon: 'book'
+mode: "wide"
+---
+
+
+## Overview
+
+We will construct workflows designed to enforce safety equipment compliance in construction areas. Specifically, we will show a few possible approaches related to how you could construct a `Workflow` to detect if workers are wearing PPE.
+
+We will be using this [image](/examples/construction.jpg) to test our results:
+
+<Frame>
+![Construction Workers](/examples/construction.jpg)
+</Frame>
+
+
+### Approach 1: Using ClassificationAgent
+
+```python
+from overeasy import *
+from PIL import Image
+
+workflow = Workflow([
+    # Detect each head in the input image
+    BoundingBoxSelectAgent(classes=["person's head"], model=OwlV2()),  
+    # Applies Non-Maximum Suppression to the detected heads
+    # It's reccomended to use NMS when using OwlV2
+    NMSAgent(iou_threshold=0.5),  
+    # Splits the input image into an image of each detected head
+    SplitAgent(),
+    # Classifies PPE using CLIP
+    ClassificationAgent(classes=["hard hat", "no hard hat"]),  
+    # Maps the returned class names 
+    ClassMapAgent({"hard hat": "has ppe", "no hard hat": "no ppe"}),
+    # Combines results back into a BoundingBox Detection
+    JoinAgent()  
+])
+
+image = Image.open("./construction.jpg")
+result, graph = workflow.execute(image)
+workflow.visualize(graph)
+```
+This approach is very fast as it only uses local open-source models. However, it is somewhat more error-prone compared to the methods described below. This is because the `ClassificationAgent` relies on `CLIP` embedding models for zero-shot classification, which, while fast, does not offer the same level of robust image understanding as models like `GPTVision`.
+
+<Frame>
+![Construction Workers](/examples/ex-2-images/step7.png)
+</Frame>
+
+---
+<Info>
+**Prerequisite**: The following approaches leverage the `Instructor` library to generate structured data. If you're not familiar with the library we recommend reading the [Docs](https://python.useinstructor.com/).
+</Info>
+
+
+### Approach 2: Using InstructorImageAgent
+
+```python
+from overeasy import *
+from pydantic import BaseModel
+from PIL import Image
+
+#Structured output
+class PPE(BaseModel):
+    hardhat: bool
+
+workflow = Workflow([
+    # Detects each person in the input image
+    BoundingBoxSelectAgent(classes=["person"]),  
+    # Splits the input image into an image of each detected person
+    SplitAgent(),  
+    # Generates structured data in the form of the response_model
+    InstructorImageAgent(response_model=PPE),  
+    # Converts the structured data into a Classification Detection
+    ToClassificationAgent(fn=lambda x: "has ppe" if x.hardhat else "no ppe"),  
+    # Combines results back into a BoundingBox Detection
+    JoinAgent()  
+])
+
+image = Image.open("./construction.jpg")
+result, graph = workflow.execute(image)
+workflow.visualize(graph)
+```
+The `InstructorImageAgent` generates structured outputs directly from images, streamlining the process with fewer steps while maintaining robustness. The `BoundingBoxSelectAgent` allows the `InstructorImageAgent` to focus its analysis on person detections.
+
+In this example, we were able to split our image at the person level, instead of having to select for heads. This is possible because the `InstructorImageAgent` is able to leverage `GPTVision` to provide additional robustness.
+<Frame>
+![Construction Workers](/examples/ex-1-images/step6.png)
+</Frame>
+
+---
+
+### Approach 3: Using DenseCaptioningAgent
+
+```python
+from overeasy import *
+from pydantic import BaseModel
+from PIL import Image
+
+class PPE(BaseModel):
+    hardhat: bool
+
+workflow = Workflow([
+    # Detects each person in the input image
+    BoundingBoxSelectAgent(classes=["person"]),
+    # Splits the input image into an image of each detected person
+    SplitAgent(),  
+    # Generates text captions for each image
+    DenseCaptioningAgent(),  
+    # Converts the text captions into structured data
+    InstructorTextAgent(response_model=PPE),  
+    # Converts the structured data into a Classification Detection
+    ToClassificationAgent(fn=lambda x: "has ppe" if x.hardhat else "no ppe"),  
+    # Combines results back into a BoundingBox Detection
+    JoinAgent()  
+])
+
+image = Image.open("./construction.jpg")
+result, graph = workflow.execute(image)
+workflow.visualize(graph)
+```
+This approach is similiar to the last approach, but takes the roundabout step of converting the image to a text caption before returning structured data.
+The benefit of this approach is efficiency. 
+
+Many effective ImageCaptioning models can be run locally, which means they can avoid expensive calls to Multimodal Language Models.
+In this scenario `InstructorTextAgent` can leverage a much cheaper model like GPT-3.5, or even a local LLM.
+We also can leverage robust models like `GPTVision` to improve the robustness of our model in `DenseCaptioningAgent` if necessary.
+
+This approach provides the flexibility in choosing between robustness and speed.
+
+

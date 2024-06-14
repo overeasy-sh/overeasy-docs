@@ -32,22 +32,38 @@ OCRAgent(model(Optional))
 </ResponseField>
 
 ### Example
-Here is an example of the `OCRAgent` as part of a Workflow for license plate recognition.
+Say we're interested in extracting the license plate from this image:
+{/* <Frame>
+![Construction Workers](/agents/image-agents/images/license-plate.png)
+</Frame> */}
+
 
 ```python example.py
-image_path = "./examples/license_plate.jpg"
-image = Image.open(image_path)
-workflow = Workflow()
-workflow.add_step(OCRAgent(model=TextractModel()))
-workflow.execute(image)
+OCRAgent(model=TextractModel())
 ```
 
+## Diagram
 
-## Use Cases
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart TB
+    direction TB
+    subgraph NODE1
+        direction LR
+        I1("IMAGE <img src='/agents//image-agents/images/license-plate.png';' />") ~~~ D1(DATA)
+    end
+    subgraph NODE2
+        direction LR
+        I2("IMAGE <img src='/agents//image-agents/images/license-plate.png';' />") ~~~ D2("DATA\n&quot8TRS77&quot")
+    end
+    NODE1 --OCRAgent--> NODE2
+```
+
+{/* ## Use Cases
 The `OCRAgent` is designed to handle use cases where extracting text from images is crucial:
 
 > - Document Digitization
 > - Automated Data Entry
 > - Translation
 > - Text-to-Speech
-> - License Plate Recognition
+> - License Plate Recognition */}

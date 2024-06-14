@@ -1,54 +1,131 @@
 ---
 title: '🔗 Execution Graph'
-description: 'Execution Graphs manage and visualize the sequence of image processing tasks'
+description: 'Execution Graphs manage and visualize the sequence of image processing tasks.'
 ---
 import Underline from '/snippets/underline.mdx';
 import UnderlineMargin from '/snippets/underline-margin.mdx';
 
 ## Overview
 
+The utilization of the `ExecutionGraph` is handled by Overeasy under the hood and is exposed to help with debugging and visualization.
+{/* 
+### Execution Node
+An `ExecutionNode` can be represented as follows:
 
-An `ExecutionGraph` tracks the relationships between different [`ExecutionNode`](/execution-node) instances, representing the entire workflow's execution.
-The execution graph is a directed acyclic graph (DAG) of nodes, where each node represents an image processing task.
-Each layer of the graph represents an operation done by a specific agent.
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart
+  subgraph NODE
+      IMAGE(IMAGE) ~~~ DATA(DATA)
+  end
+```
 
-The creation/utlization of the ExecutionGraph is handled by Overeasy under the hood and is mostly just exposed for convenience, debugging, and visualizations.
+where `DATA` can either be text, a Detection object, or a Pydantic object. 
 
+You can find more details on Execution Nodes [here]().
 
+## Execution Graph */}
+An Execution Graph tracks the relationships between different [Execution Node](https://docs.overeasy.sh/types/about-execution-node) instances, representing the entire workflow's execution. Let's take a look at one step in a workflow: 
 
-### Methods
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart TB
+    direction TB
+    subgraph NODE1
+        direction LR
+        I1(IMAGE) ~~~ D1(DATA)
+    end
+    subgraph NODE2
+        direction LR
+        I2(IMAGE) ~~~ D2(DATA)
+    end
+    NODE1 --AGENT--> NODE2
+```
 
-### ascii_graph
+Upon execution of the agent, Node 2 is added to the Execution Graph, which contains its own image and data attributes.
 
-Prints a text-based representation of the graph.
+A workflow is comprised of a series of agents that are executed in order. An Execution Graph takes the form of a Directed Acyclic Graph (DAG), where each layer of the graph represents the outcome of a step in the workflow. Here's an example:
 
-<Underline text="Returns" margin="mt-0" />
-<ResponseField name="ascii_graph" type="None">
-  Outputs the ASCII representation of the graph to the console.
-</ResponseField>
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart TD
+  A(NODE) --- SPLIT(AGENT) --> 1(NODE) & 2(NODE) & 3(NODE) & 4(NODE)
+  1 --AGENT--> 1.1(NODE)
+  2 --AGENT--> 2.1(NODE)
+  3 --AGENT--> 3.1(NODE)
+  4 --AGENT--> 4.1(NODE) 
+  1.1 & 2.1 & 3.1 & 4.1 --- JOIN(AGENT) --> 5(NODE)
+  style SPLIT fill:#ffffff,stroke:#333,stroke-width:0px
+  style JOIN fill:#ffffff,stroke:#333,stroke-width:0px
+```
+{/* 
+## Attributes
 
-### parent_of
-
-Returns the parent node of a given node. Raises an error if the node has multiple parents.
-
-<Underline text="Arguments" margin="mt-0" />
-<ParamField path="node" type="ExecutionNode">
-  The node for which to find the parent.
+<ParamField path="root" type="ExecutionNode" required="true">
+  The input image at this step of the workflow.
 </ParamField>
 
-<UnderlineMargin text="Returns" margin="mt-0" />
-<ResponseField name="parent_node" type="ExecutionNode">
-  The parent node of the given node.
-</ResponseField>
+<ParamField path="edges" type="Dict[int, List[ExecutionNode]]" required="true">
+  The input image at this step of the workflow.
+</ParamField>
 
+<ParamField path="parent" type="Dict[int, List[ExecutionNode]]" required="true">
+  The input image at this step of the workflow.
+</ParamField> */}
 
+## Methods
 
-### top_sort
+<ParamField path="ExecutionGraph.ascii_graph()">
+   Prints a text-based representation of the graph.
+{/* 
+  <Card>
+   An example output could look like:
+   ```
+   ExecutionGraph
+    └── Node(ID=0)
+        └── Node(ID=1)
+            ├── Node(ID=2)
+            │   └── Node(ID=3)
+            │       └── Node(ID=4)
+            │           └── Node(ID=5)
+            ├── Node(ID=6)
+            │   └── Node(ID=7)
+            │       └── Node(ID=8)
+            │           └── Node(ID=5)
+            ├── Node(ID=9)
+            │   └── Node(ID=10)
+            │       └── Node(ID=11)
+            │           └── Node(ID=5)
+            └── Node(ID=12)
+                └── Node(ID=13)
+                    └── Node(ID=14)
+                        └── Node(ID=5)
+  ```
 
-Performs a topological sort of the graph, returning a list of lists of nodes representing each level of the graph.
+  An analysis:
 
-<UnderlineMargin text="Returns" margin="mt-0" />
-<ResponseField name="sorted_nodes" type="List[List[ExecutionNode]]">
-  A list of lists of nodes representing each level of the graph.
-</ResponseField>
+  -- **Node(ID=0)**: This is the root node from which all operations begin.
+
+  -- **Node(ID=1)**: This node is directly connected to the root node and acts as a branching point for multiple parallel paths.
+
+  -- **Node(ID=2), Node(ID=6), Node(ID=9), Node(ID=12)**: These nodes are the starting points of separate branches that start from Node(ID=1). Each branch processes data independently.
+
+  -- **Node(ID=3, 7, 10, 13) and Node(ID=4, 8, 11, 14)**: These nodes represent subsequent steps in each respective branch, processing data sequentially within their branch.
+
+  -- **Node(ID=5)**: This node is a convergence point where all branches merge.
+
+  </Card> */}
+</ParamField>
+
+<ParamField path="ExecutionGraph.top_sort()">
+   
+  **Returns:**
+  - `List[List[ExecutionNode]]`: Performs a topological sort of the graph, returning a list of list of nodes representing each level of the graph.
+
+  {/* <Card title="Returns">
+    <ResponseField name="sorted_nodes" type="List[List[ExecutionNode]]">
+      A list of lists of nodes representing each level of the graph.
+    </ResponseField>
+  </Card> */}
+</ParamField>
 

@@ -1,43 +1,63 @@
 ---
 title: '🖼️ Execution Node'
-description: 'Execution Nodes represent individual steps in image processing workflows'
+description: 'Execution Nodes represent individual steps in an image processing workflow.'
 ---
 
 ## Overview
 
-The `ExecutionNode` class is crucial for representing a single step in the workflow of image processing tasks. It encapsulates the image, the data processed at this stage, and optionally, a reference to the parent detection.
+The `ExecutionNode` class represents a single step in an image processing workflow. You can think of an Execution Node as containing two main attributes: `IMAGE` and `DATA`. 
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart
+  subgraph NODE
+      IMAGE(IMAGE) ~~~ DATA(DATA)
+  end
+```
 
-### Attributes
+All Execution Nodes have a unique `id`.
 
-- **image**: The input image at this step of the workflow.
-- **data**: The data resulting from processing the image. This could be a set of detections or any other type of data.
-- **parent_detection** (Optional): The detections from the previous step that led to this node.
+## Attributes
 
-### Methods
+<ParamField path="image" type="PIL.Image.Image" required="true">
+  The input image at this step of the workflow.
+</ParamField>
+<ParamField path="data" type="any" required="true">
+  The data resulting from processing the image.  This could be text, a Detections object, or a Pydantic object.
+</ParamField>
+<ParamField path="parent_detection" type="Detection" optional="true">
+  The detections from the previous step that led to this node.
 
-#### data_is_detections
-
-Checks if the data associated with this node is of type `Detections`.
-
-<Underline text="Returns" margin="mt-0" />
-<ResponseField name="is_detections" type="bool">
-  A boolean indicating if the data is of type `Detections`.
-</ResponseField>
-
-#### visualize
-
-Generates a visual representation of the node. If the data is detections, it annotates the image with the detections. Otherwise, it displays the data as text on the image.
-
-<Underline text="Returns" margin="mt-0" />
-<ResponseField name="visualized_image" type="PIL.Image.Image">
-  The image with annotations or data visualization.
-</ResponseField>
-
-#### id
-
-Returns the unique identifier of the node.
-
-<Underline text="Returns" margin="mt-0" />
-<ResponseField name="node_id" type="int">
+  Note: This attribute operates behind the scenes to assist with splits and joins.
+</ParamField>
+<ParamField path="id" type="int">
   The unique identifier of the node.
-</ResponseField>
+</ParamField>
+
+## Methods
+
+{/* 
+<AccordionGroup>
+  <Accordion title="Visualizing Text Data">
+    <img height="200" src="/types/execution-nodes-images/text-data.png" />
+  </Accordion>
+
+  <Accordion title="Visualizing Detections Data">
+    <img height="200" src="/types/execution-nodes-images/detections-data.png" />
+  </Accordion>
+
+  <Accordion title="Visualizing Pydantic Data">
+    <img height="200" src="/types/execution-nodes-images/pydantic-data.png" />
+  </Accordion>
+</AccordionGroup> */}
+
+<ParamField path="ExecutionNode.visualize()">
+  **Returns:**
+  - `[PIL.Image.Image]`: Generates a visual representation of the node. If the data in the node are Detections, it annotates the image with the detections. 
+Otherwise, it displays the data as text on the image.
+
+  {/* <Card title="Returns">
+    <ResponseField name="visualized_image" type="[PIL.Image.Image]">
+      The image with annotations or data visualization.
+    </ResponseField>
+  </Card> */}
+</ParamField>

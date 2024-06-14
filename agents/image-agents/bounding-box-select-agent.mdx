@@ -8,10 +8,10 @@ icon: 'robot'
 
 ### Parameters
 
-The `BoundingBoxSelectAgent` is initialized with three arguments: 
+The `BoundingBoxSelectAgent` is initialized with two arguments: 
 
 ```
-BoundingBoxSelectAgent(classes, split, model(Optional))
+BoundingBoxSelectAgent(classes, model(Optional))
 ```
 
 
@@ -19,11 +19,6 @@ BoundingBoxSelectAgent(classes, split, model(Optional))
 **Specifies the list of objects to detect within an image for the object detection task.**
 
 Each object of interest (or "class") should be included within the `classes` list. 
-</ResponseField>
-
-<ResponseField name="split" type="Boolean" required>
-**A flag that determines whether the image should be split based on detections.**
-
 </ResponseField>
 
 <ResponseField name="model" type="BoundingBoxModel">
@@ -50,20 +45,38 @@ The supported `BoundingBoxModel` models can be found below:
 
 
 
-### Example
-
-Here is an example of the `BoundingBoxSelectAgent` as part of a `Workflow` for counting hardhats.
+## Example
 
 ```python example.py
-workflow.add_step(BoundingBoxSelectAgent(classes=["construction hat"], model=GroundingDINO(), split=True))
+BoundingBoxSelectAgent(classes=["person"])
 ```
 
 <CardGroup cols={2}>
   <Card
-    title="Construction Example"
+    title="PPE Example"
     icon="circle-info"
-    href="https://docs.overeasy.sh/examples/construction-example"
+    href="https://docs.overeasy.sh/examples/ppe-example"
   >
     See Full Example
   </Card>
 </CardGroup>
+
+The output from this agent will be an ExecutionNode containing the previous image and the detection results.
+
+## Diagram
+
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart TB
+    direction TB
+    subgraph NODE1
+        direction LR
+        I1("IMAGE <img src='/agents//image-agents/images/people.png';' />") ~~~ D1(DATA)
+    end
+    subgraph NODE2
+        direction LR
+        I2("IMAGE <img src='/agents//image-agents/images/people.png';' />") ~~~ D2(Detections.BOUNDING_BOX)
+    end
+    NODE1 --BoundingBoxSelectAgent--> NODE2
+```
+

@@ -23,33 +23,38 @@ Each original class should be present within the `classes` list.
 
 ### Example
 
-Here is an example of the `ClassMapAgent` in action.
-
-```python example.py
-# Define a mapping from original class names to new class names
+Here's an example name map:
+```python
 name_map = {
     "dog": "canine",
     "cat": "feline",
     "bird": "avian"
 }
-
-# Create an instance of ClassMapAgent with the name map
-agent = ClassMapAgent(name_map=name_map)
-
-# Assume we have a Detections object with some detected objects
-detections = Detections(
-    xyxy=[(10, 10, 50, 50), (20, 20, 60, 60)],
-    class_ids=[1, 2],
-    confidence=[0.9, 0.85],
-    classes=["dog", "cat"],
-    data={},
-    detection_type="CLASSIFICATION"
-)
-
-# Execute the ClassMapAgent with the detections
-new_detections = agent.execute(dets=detections)
 ```
 
+```python
+ClassMapAgent(name_map=name_map)
+```
+
+
+## Diagram
+
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart TB
+    direction TB
+    subgraph NODE1
+        direction LR
+        I1("IMAGE") ~~~ D1(Detections)
+    end
+    subgraph NODE2
+        direction LR
+        I2("IMAGE") ~~~ D2(Updated Detections)
+    end
+    NODE1 --ClassMapAgent--> NODE2
+```
+
+{/* 
 ### Use Cases
 
-The `ClassMapAgent` is useful in scenarios requiring the standardization or simplification of class names from detection models.
+The `ClassMapAgent` is useful in scenarios requiring the standardization or simplification of class names from detection models. */}

@@ -1,0 +1,56 @@
+---
+title: 'NMS Agent'
+description: 'The `NMSAgent` is used to perform Non-Maximum Suppression (NMS) on a set of detections, specifically for bounding boxes.'
+icon: 'robot'
+---
+
+## Initialization
+
+### Parameters
+
+The `NMSAgent` is initialized with two arguments: 
+
+```
+NMSAgent(iou_threshold, score_threshold)
+```
+
+<ResponseField name="iou_threshold" type="Float" required>
+**This is the Intersection Over Union (IOU) threshold used to determine whether two bounding boxes overlap more than the specified threshold. If they do, the one with the lower confidence score is suppressed.**
+</ResponseField>
+
+<ResponseField name="score_threshold" type="Float" required>
+**This is the minimum confidence score that a detection must have to be considered valid. Detections with scores below this threshold are ignored.**
+</ResponseField>
+
+
+
+### Example
+
+```python example.py
+NMSAgent(iou_threshold=0.5, score_threshold=0.6)
+
+```
+
+## Diagram
+
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart TB
+    direction TB
+    subgraph NODE1
+        direction LR
+        I1("IMAGE") ~~~ D1(Detections)
+    end
+    subgraph NODE2
+        direction LR
+        I2("IMAGE") ~~~ D2(Updated Detections)
+    end
+    NODE1 --NMSAgent--> NODE2
+```
+
+{/* 
+
+
+### Use Cases
+
+The `NMSAgent` is useful in computer vision tasks involving bounding box object detection by reducing redundant bounding boxes. It ensures that each detected object is represented by the most accurate and highest confidence bounding box. */}

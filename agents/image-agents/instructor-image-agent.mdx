@@ -25,60 +25,45 @@ This parameter expects a class that is a subclass of `BaseModel` from the `pydan
 You can find a comprehensive list of all OpenAI API models [here](https://platform.openai.com/docs/models).
 </ResponseField>
 
-## Execution
-
-### Parameters
-The `Workflow` is expected to have some sort of image input that needs to be processed. 
-
-### Example
-
-Here is an example of the `InstructorImageAgent` as part of a `Workflow` for counting vehicles.
+## Example
+Here is an example of the `InstructorImageAgent` designed for a Workflow to detect if workers are wearing personal protective equipment (PPE).
 
 **Step 1. Define a `response_model`.**
 
 ```python example.py
-from pydantic import BaseModel, Field
-from typing import List
-
-class ProductFeature(BaseModel):
-    feature_name: str
-    description: str
-
-class ProductDetails(BaseModel):
-    product_name: str
-    price: float
-    available: bool
-    features: List[ProductFeature]
+class PPE(BaseModel):
+    hardhat: bool
 ```
 
-This model expects the analysis to return the counts of different types of vehicles and a timestamp indicating the time of the image capture.
+The PPE class has a single attribute `hardhat` that is a boolean, indicating whether a hardhat is present or not.
 
-**Step 2. Use `InstructorTextAgent`.**
+**Step 2. Use `InstructorImageAgent`.**
 
 ```python example.py
-agent = InstructorTextAgent(response_model=ProductDetails)
+InstructorImageAgent(response_model=PPE)
 ```
 
-**Step 3. Incorporate the `InstructorTextAgent` into a `Workflow`.**
+The InstructorImageAgent processes images and extracts structured data based on the PPE model. The output from this agent will be an ExecutionNode containing the original image and a Pydantic object that may look like
 
-```python example.py
-from overeasy.agents import Workflow, ExecutionNode, ExecutionGraph
+```python
+{
+  "hardhat": true
+}
+```
 
-# Define a workflow with our detailed text agent
-workflow = Workflow(steps=[agent])
+## Diagram
 
-# Example text input asking about a product
-input_text = "Tell me about the features of the MacBook Pro 2021 model."
-
-# Execute the workflow
-result_nodes, execution_graph = workflow.execute(input_text)
-
-# Print the structured response
-for node in result_nodes:
-    product_details = node.data
-    print(f"Product: {product_details.product_name}")
-    print(f"Price: ${product_details.price}")
-    print(f"Available: {'Yes' if product_details.available else 'No'}")
-    for feature in product_details.features:
-        print(f"Feature: {feature.feature_name}, Description: {feature.description}")
+```mermaid
+%%{init: {'theme': 'neutral' } }%%
+flowchart TB
+    direction TB
+    subgraph NODE1
+        direction LR
+        I1("IMAGE <img src='/agents//image-agents/images/worker.png';' />") ~~~ D1(DATA)
+    end
+    subgraph NODE2
+        direction LR
+        I2("IMAGE <img src='/agents//image-agents/images/worker.png';' />") ~~~ D2("DATA\n{&quothardhat&quot: true}")
+    end
+    NODE1 --InstructorImageAgent--> NODE2
 ```
