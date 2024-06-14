@@ -4,78 +4,107 @@ description: 'Install Overeasy locally'
 ---
 
 
-### **Step 1.** Set up virtual environment (Optional):
-We recommend setting up Overeasy with a virtual environment.
-
-If you don't already have conda installed you can install it [here](https://docs.anaconda.com/free/miniconda/miniconda-install/).
-
-``` 
-conda create -n overeasy python=3.10
-conda activate overeasy
-```
-
-
-### **Step 2.** Install Overeasy:
-<Info>
-  **Prerequisite** You should be using Python version ```>=3.10```.
-</Info>
-<CodeGroup>
-
-```bash pip3
-pip3 install overeasy
-```
-
-</CodeGroup>
-
-### **Step 3.** Setup API Keys:
-
-If you want to use private models like GPT4o, Claude or Gemini, you will need to setup the relevant API keys.
-
-**1. Obtain API Keys.**
-
-If you haven't created these API keys yet, follow the instructions below:
-
-> **`OPENAI_API_KEY`**: Navigate to OpenAI's [API keys page](https://platform.openai.com/account/api-keys) to obtain your API key.  You can visit their [documentation](https://platform.openai.com/docs/quickstart) to find more detailed information.
+<Steps>
+  <Step title="Set up Virtual Environment (Optional)">
+    We recommend setting up Overeasy with a virtual environment. 
+    If you don't already have conda installed you can install it [here](https://docs.anaconda.com/free/miniconda/miniconda-install/).
+    ```bash
+    conda create -n overeasy python=3.10
+    conda activate overeasy
+    ```
+  </Step>
 
 
-> **`ANTHROPIC_API_KEY`**: Navigate to the [Anthropic Console](https://console.anthropic.com/login?returnTo=%2F%3F) to get your API key on the [API keys page](https://console.anthropic.com/settings/keys). You can visit their [documentation](https://docs.anthropic.com/en/docs/getting-access-to-claude) to find more detailed information.
+  <Step title="Install Overeasy">
+    <Info>
+      You should be using a Python version ```>=3.10```.
+    </Info>
+    Install Overeasy using the following command:
+    ```bash
+    pip3 install overeasy
+    ```
+  </Step>
+
+  <Step title="Setup API Keys">
+      If you want to use private models like *GPT-4o*, *Claude* or *Gemini*, you will need to setup the relevant API keys.
+      {/* If you haven't created these API keys yet, follow the instructions below: */}
+
+      > **`OPENAI_API_KEY`**: Navigate to OpenAI's [API keys page](https://platform.openai.com/account/api-keys) to obtain your API key.  You can visit their [documentation](https://platform.openai.com/docs/quickstart) to find more detailed information.
+
+      > **`ANTHROPIC_API_KEY`**: Navigate to the [Anthropic Console](https://console.anthropic.com/login?returnTo=%2F%3F) to get your API key on the [API keys page](https://console.anthropic.com/settings/keys). You can visit their [documentation](https://docs.anthropic.com/en/docs/getting-access-to-claude) to find more detailed information.
+
+      > **`GEMINI_API_KEY`**: Navigate to Gemini's [API keys page](https://aistudio.google.com/app/apikey) to obtain your API key. You can visit their [documentation](https://ai.google.dev/gemini-api/docs/api-key) to find more detailed information.
+
+      **Setting Up API Keys in Environment Variables**
+
+      <Tabs>
+        <Tab title="Mac/Linux">
+          At the end of your `~/.zshrc`, `~/.bashrc` or `~/.bash_profile` add the following:
+          ```bash
+          export OPENAI_API_KEY="your api key"
+          export ANTHROPIC_API_KEY="your api key"
+          export GEMINI_API_KEY="your api key"
+          ```
+          Make sure to open a new terminal or `source` your profile so these changes take effect.
+        </Tab>
+        <Tab title="Windows">
+          Open PowerShell and run the following:
+          ```powershell
+          setx OPENAI_API_KEY "your api key"
+          setx ANTHROPIC_API_KEY "your api key"
+          setx GEMINI_API_KEY "your api key"
+          ```
+        </Tab>
+        <Tab title="Python">
+          **Hardcoding API keys**
 
 
-> **`GEMINI_API_KEY`**: Navigate to Gemini's [API keys page](https://aistudio.google.com/app/apikey) to obtain your API key. You can visit their [documentation](https://ai.google.dev/gemini-api/docs/api-key) to find more detailed information.
+          You can also manually set these environment variables in python.
+          ```python python
+          import os
+          os.environ["OPENAI_API_KEY"] = "your api key"
+          os.environ["ANTHROPIC_API_KEY"] = "your api key"
+          os.environ["GEMINI_API_KEY"] = "your api key"
+          ```
 
-**2. Add API Keys to Environment Variables.**
-
-To use your API keys, you'll need to add them to your environment variables.
-
-> 
-> 1. **Open terminal**: Open your Terminal app. You can find it in `Applications` > `Utilities` > `Terminal`.
-> 
-> 2. **Edit Bash profile**: You can use either **Zsh** or **Bash**.
-> 
->      - For **Zsh** (default on newer macOS): Type `nano ~/.zshrc`.
->      - For **Bash**: Type `nano ~/.bash_profile`.
-> 
->      You should see a file open.
->
-> 3. **Add your API key**: Add the following lines to the end of the opened file:
-> 
-> ```
-> export OPENAI_API_KEY = "your api key"
-> export ANTHROPIC_API_KEY = "your api key"
-> export GEMINI_API_KEY = "your api key"
-> ```
-> 4. **Save and exit**: Save your changes by pressing `Ctrl + O`, then press `Enter`. Exit the file by pressing `Ctrl + X`.
-> 
-> 5. **Reload profile**: Type `source ~/.zshrc` (for Zsh) or `source ~/.bash profile` (for Bash) to reload the profile.
-
-These steps will ensure your API key is available for use in your environment.
-
-**3. Congrats! You are now ready to start writing Overeasy code 🥳.** 
-
-Check out our [examples](/examples/overview) to get started.
+          **Loading from .env**
 
 
-## Troubleshooting
+          Or load them from a `.env` file.
+
+          ```bash 
+          pip3 install python-dotenv
+          ```
+
+          Create a `.env` file in your project root and add the following:
+          ```bash .env
+          OPENAI_API_KEY="your api key"
+          ANTHROPIC_API_KEY="your api key"
+          GEMINI_API_KEY="your api key"
+          ```
+
+          ```python python
+          from dotenv import load_dotenv
+          load_dotenv()
+          ```
+        </Tab>
+
+      </Tabs>
+  </Step>
+
+  <Step title="Congrats 🎉">
+    Get started with Overeasy by checking out our [examples](/examples/overview).
+  </Step>
+
+</Steps>
+
+
+
+
+
+
+
+{/* ## Troubleshooting
 
 ## modal for no gpus
 
@@ -86,4 +115,4 @@ Here's how to solve some common problems with getting set up.
     If you are running Overeasy locally, you may not have access to a GPU. 
     We recommend using [Modal](https://modal.com/keellylu/main/apps) to get access.
   </Accordion>
-</AccordionGroup>
+</AccordionGroup> */}
