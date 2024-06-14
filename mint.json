@@ -37,7 +37,13 @@
       "group": "Getting Started",
       "pages": [
         "introduction",
-        "installation"
+        "installation",
+        {
+          "group": "Extras",
+          "pages": [
+            "extra-installation"
+          ]
+        }
       ]
     },
     {
