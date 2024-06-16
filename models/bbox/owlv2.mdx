@@ -24,13 +24,13 @@ It was pretrained on a web-scale corpus of 10B+ images, making it particularly e
 
 OwlV2 does often struggle with the problem of overpredicting bounding boxes or predicting multiple boxes for a single instance, so its reccomended that you chain this model with [Non Max Suppression](/agents/detection-agents/nms-agent) to get cleaner results. 
 
-## Usage
+## Example Usage
 
 ```bash
 wget https://github.com/overeasy-sh/overeasy/blob/main/examples/kites.jpg
 ```
 
-  ```python
+```python
 from overeasy import *
 from PIL import Image
 workflow = Workflow([

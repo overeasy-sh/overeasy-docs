@@ -99,7 +99,7 @@
     {
       "group": "Models",
       "pages": [
-        "types/models",
+        "models/models",
         {
           "group": "Bounding Box",
           "pages": [
