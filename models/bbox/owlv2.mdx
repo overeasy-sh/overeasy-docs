@@ -5,7 +5,8 @@ description: 'Open-World Language-guided Visual representation for object detect
 
 ## Overview
 
-OwlV2 (Open-World Language-guided Visual representation) is a model that combines natural language processing with computer vision to enable open-world understanding and object detection based on textual descriptions. It is based on the paper: [OWL-ViT: Open-World Object Detection with Vision Transformers](https://arxiv.org/abs/2305.19004).
+OwlV2 (Open-World Language-guided Visual representation) is a model that combines natural language processing with computer vision to enable open-world understanding and object detection based on textual descriptions.
+
 
 <ParamField path="OwlV2()">
   The `OwlV2` class is a wrapper around the pre-trained OWLv2 model from Hugging Face. It provides an interface for loading the model, detecting objects in an image based on a list of candidate classes, and returning the detections as bounding boxes.
@@ -27,7 +28,7 @@ OwlV2 does often struggle with the problem of overpredicting bounding boxes or p
 ## Example Usage
 
 ```bash
-wget https://github.com/overeasy-sh/overeasy/blob/main/examples/kites.jpg
+wget -O kites.jpg "https://github.com/overeasy-sh/overeasy/blob/main/examples/kites.jpg?raw=true"
 ```
 
 ```python
