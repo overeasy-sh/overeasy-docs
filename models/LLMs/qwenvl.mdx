@@ -1,6 +1,36 @@
 ---
 title: 'QwenVL'
-description: ''
+description: 'The best Local Vision Language Model'
 ---
 
 ## Overview
+
+QwenVL is one of the most advanced multimodal LLMs that you can run locally!
+In order to comfortably run QwenVL it's reccomended that you have at least **24GB of VRAM**.
+
+
+<ParamField path="QwenVL(model: str)">
+The `QwenVL` class encapsulates the functionality of the QwenVL models, providing methods for loading the model, detecting objects based on textual descriptions, managing resources, and generating responses based on prompts. It supports multiple model types including base, int4, fp16, and bf16, each optimized for different hardware configurations.
+
+<ParamField path="model" default="bf16">
+Specifies which version of the model to load. Valid options are `"base"`, `"int4"`, `"fp16"`, and `"bf16"`. The `"int4"` model requires additional dependencies and setup for quantization support.
+</ParamField>
+
+</ParamField>
+
+
+
+
+
+<Info>
+You have to install special dependencies to use the `"int4"` quantized version of the model, but this does allow you to run the model with only 11GB VRAM.
+These instructions are outling in [Extra Installation](/extra-installation)
+</Info>
+
+
+## Use Cases
+The ideal use case for QwenVL is when you have a large amount of data and you want to be able to query it using natural language.
+Since QwenVL can be locally you are more just bottlenecked by inference speed rather than inference cost.
+
+## Example Usage
+Check out the last example in our [Colab](https://colab.research.google.com/drive/1Mkx9S6IG5130wiP9WmwgINiyw0hPsh3c?usp=sharing)
