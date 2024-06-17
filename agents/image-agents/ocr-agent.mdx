@@ -41,7 +41,7 @@ Say we're interested in extracting the license plate from this image:
 ```python example.py
 OCRAgent(model=TextractModel())
 ```
-
+{/* 
 ## Diagram
 
 ```mermaid
@@ -50,14 +50,14 @@ flowchart TB
     direction TB
     subgraph NODE1
         direction LR
-        I1("IMAGE <img src='/agents//image-agents/images/license-plate.png';' />") ~~~ D1(DATA)
+        I1("IMAGE <img src='/agents/image-agents/images/license-plate.png';' />") ~~~ D1(DATA)
     end
     subgraph NODE2
         direction LR
-        I2("IMAGE <img src='/agents//image-agents/images/license-plate.png';' />") ~~~ D2("DATA\n&quot8TRS77&quot")
+        I2("IMAGE <img src='/agents/image-agents/images/license-plate.png';' />") ~~~ D2("DATA\n&quot8TRS77&quot")
     end
     NODE1 --OCRAgent--> NODE2
-```
+``` */}
 
 {/* ## Use Cases
 The `OCRAgent` is designed to handle use cases where extracting text from images is crucial:

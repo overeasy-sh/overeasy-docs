@@ -14,7 +14,7 @@ There are 4 main classes of Agents in Overeasy:
 ### **Image Agents**
 
 Image Agents operate on a single PIL image input.
- ```mermaid
+ {/* ```mermaid
 %%{init: {'theme': 'neutral' } }%%
 flowchart LR
     direction TB
@@ -29,11 +29,11 @@ flowchart LR
         NODE1 --ImageAgent--> NODE2
     
     style I1 fill:#ECECFD
-```
+``` */}
 
 ### **Text Agents** 
 Text Agents operate on a single text input.
-
+{/* 
  ```mermaid
 %%{init: {'theme': 'neutral' } }%%
 flowchart LR
@@ -49,12 +49,12 @@ flowchart LR
         NODE1 --TextAgent--> NODE2
     
     style D1 fill:#ECECFD
-```
+``` */}
 
 ### **Detection Agents** 
 Detection Agents operate on a single [Detections](https://docs.overeasy.sh/types/about-detections) input.
 
-  ```mermaid
+  {/* ```mermaid
 %%{init: {'theme': 'neutral' } }%%
 flowchart LR
     direction TB
@@ -69,7 +69,7 @@ flowchart LR
         NODE1 --DetectionAgent--> NODE2
     
     style D1 fill:#ECECFD
-```
+``` */}
 
  ### **Split Agent** 
  Split Agents split a Bounding Box Detection into multiple child Nodes/Detections.
@@ -77,7 +77,7 @@ flowchart LR
 ```mermaid
 %%{init: {'theme': 'neutral' } }%%
 flowchart TD
-  A(Image, Detections) --- SplitAgent(SplitAgent) --> 1(Crop 1, Detections) & 2(Crop 2, Detections) & 3(Crop 3, Detections)
+  A(Image, Detections) --- SplitAgent(SplitAgent) --> 1(Image Crop 1, Individual Detection) & 2(Image Crop 2, Individual Detection) & 3(Image Crop 3, Individual Detection)
 
   style SplitAgent fill:#ffffff,stroke:#333,stroke-width:0px
 ```
@@ -88,7 +88,7 @@ flowchart TD
  ```mermaid
 %%{init: {'theme': 'neutral' } }%%
 flowchart TD
-  1(Crop 1, Detections) & 2(Crop 2, Detections) & 3(Crop 3, Detections) --- JoinAgent(JoinAgent) --> 4(Image, Detections)
+  1(Image Crop 1, Individual Detection) & 2(Image Crop 2, Individual Detection) & 3(Image Crop 3, Individual Detection) --- JoinAgent(JoinAgent) --> 4(Image, Detections)
 
   style JoinAgent fill:#ffffff,stroke:#333,stroke-width:0px
 ```

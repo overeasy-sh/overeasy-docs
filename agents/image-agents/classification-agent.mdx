@@ -48,7 +48,7 @@ ClassificationAgent(classes=["hard hat", "no hard hat"]),
 
 The output from this agent will be an ExecutionNode containing the previous image and the classification result (i.e. either "hard hat" or "no hard hat").
 
-
+{/* 
 
 ## Diagram
 
@@ -58,11 +58,11 @@ flowchart TB
     direction TB
     subgraph NODE1
         direction LR
-        I1("IMAGE <img src='/agents//image-agents/images/worker.png';' />") ~~~ D1(DATA)
+        I1("IMAGE <img src='/agents/image-agents/images/worker.png';' />") ~~~ D1(DATA)
     end
     subgraph NODE2
         direction LR
-        I2("IMAGE <img src='/agents//image-agents/images/worker.png';' />") ~~~ D2(Detections.CLASSIFICATION)
+        I2("IMAGE <img src='/agents/image-agents/images/worker.png';' />") ~~~ D2(Detections.CLASSIFICATION)
     end
     NODE1 --ClassificationAgent--> NODE2
-```
+``` */}

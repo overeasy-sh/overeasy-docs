@@ -55,7 +55,7 @@ Here is an example of the `VisionPromptAgent` designed for a Workflow to detect 
 ```python example.py
 VisionPromptAgent("Is the egg damaged in anyway?",  model=GPT4Vision())
 ```
-
+{/* 
 ## Diagram
 
 ```mermaid
@@ -64,14 +64,14 @@ flowchart TB
     direction TB
     subgraph NODE1
         direction LR
-        I1("IMAGE <img src='/agents//image-agents/images/cracked_egg.jpg';' />") ~~~ D1(DATA)
+        I1("IMAGE <img src='/agents/image-agents/images/cracked_egg.jpg';' />") ~~~ D1(DATA)
     end
     subgraph NODE2
         direction LR
-        I2("IMAGE <img src='/agents//image-agents/images/cracked_egg.jpg';' />") ~~~ D2("DATA\n "&quotYes, the egg in the image is damaged. The shell\n is cracked, and the contents of the egg have spilled out.&quot"")
+        I2("IMAGE <img src='/agents/image-agents/images/cracked_egg.jpg';' />") ~~~ D2("DATA\n "&quotYes, the egg in the image is damaged. The shell\n is cracked, and the contents of the egg have spilled out.&quot"")
     end
     NODE1 --VisionPromptAgent--> NODE2
-```
+``` */}
 
 {/* <CardGroup cols={2}>
   <Card
