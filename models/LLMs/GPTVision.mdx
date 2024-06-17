@@ -33,8 +33,12 @@ The `GPTVision` class extends the capabilities of `GPT` to include handling imag
 This class is part of the multimodal models that can process both text and images.
 
 ## Initialization:
-- api_key: Optional. Your OpenAI API key. If not provided, it will attempt to use the OPENAI_API_KEY environment variable.
-model: The model name, default is "gpt-4o". It should be one of the models that support image inputs.
+<ParamField path="api_key" type="string" default="os.getenv(OPENAI_API_KEY)">
+  Your OpenAI API key. If not provided, it will attempt to use the OPENAI_API_KEY environment variable.
+</ParamField>
+<ParamField path="model" type="string" default="gpt-3.5-turbo">
+    Model name of one of open AI's supported models
+</ParamField>
 
 ## Methods:
 
@@ -59,12 +63,13 @@ Generally, `GPT-4o` is the best model to use for image-to-text tasks, and is che
 ## Usage Scenarios
 <Accordion title="Generating Structured Output">
 ```bash
-wget ...
+wget -O drivers_license.jpg https://github.com/overeasy-sh/overeasy/blob/main/examples/drivers_license.jpg?raw=true
 ```
 
 ```python
 from overeasy import *
 from pydantic import BaseModel
+from PIL import Image
 
 class License(BaseModel):
     license_number: str
@@ -79,7 +84,7 @@ workflow = Workflow([
     InstructorImageAgent(response_model=License, model="gpt-4o")
 ])
 
-image = Image.open("./ima_cardholder.jpg")
+image = Image.open("./drivers_license.jpg")
 result, graph = workflow.execute(image)
 print(repr(result[0].data))
 ```
@@ -108,11 +113,13 @@ Generated output:
 
 <Accordion title="Image Captioning">
     ```bash
-    wget ...
+    wget -O eiffel_photo.png https://github.com/overeasy-sh/overeasy/blob/main/examples/eiffel_photo.png?raw=true
     ```
 
     ```python
     from overeasy import *
+    from PIL import Image
+
     workflow = Workflow([
         DenseCaptioningAgent(model=GPTVision(model="gpt-4o"))
     ])
@@ -121,7 +128,7 @@ Generated output:
     ```
 
     <Frame caption="The image is a black-and-white photograph featuring a man in a suit seemingly interacting with the Eiffel Tower. The man stands in the foreground with one arm extended, appearing to be touching the top of the Eiffel Tower with his hand. This perspective trick creates the illusion that he is much larger than the tower itself. The background shows the full view of the Eiffel Tower, with the base and the surrounding area visible. The photo is taken in a way that makes it look like the man is playfully leaning on or manipulating the tower due to the forced perspective technique. The man is dressed in a suit and tie, looking down at his hand with a thoughtful or playful expression. The setting is likely the Champ de Mars, a large public greenspace near the Eiffel Tower in Paris, France.">
-        <img src="models/LLMs/eiffel.png" />
+        <img src="models/LLMs/eiffel_photo.png" />
     </Frame>
 </Accordion>
 
@@ -134,6 +141,8 @@ wget ...
 
 ```python
 from overeasy import *
+from PIL import Image
+
 workflow = Workflow([
     BinaryChoiceAgent("Do the Celtics have possession of the ball?", model=GPTVision(model="gpt-4o"))
 ])
