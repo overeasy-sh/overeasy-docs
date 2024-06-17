@@ -8,19 +8,19 @@ description: 'Install extra packages to speed up Overeasy'
 
 `Overeasy` currently supports `int4` quantization for running models like `QwenVL`.
 
-To use these models, in a performant manner you will need to install `AutoGPTQ` and make sure to build the relevant `CUDA` extensions!
+To use these models, you will need to install `AutoGPTQ` in a performant manner. Make sure to build the relevant `CUDA` extensions!
 
 In our example [Colab](https://colab.research.google.com/drive/1Mkx9S6IG5130wiP9WmwgINiyw0hPsh3c?usp=sharing), we install `AutoGPTQ` but we also install a prebuilt wheel so things are a bit easier.
 
-You can try installing `AutoGPTQ` from pip using the provided instructions[https://github.com/AutoGPTQ/AutoGPTQ/blob/main/docs/INSTALLATION.md]
+You can install `AutoGPTQ` from pip using the provided [instructions](https://github.com/AutoGPTQ/AutoGPTQ/blob/main/docs/INSTALLATION.md).
 
 
-But if that doesn't work you will install `AutoGPTQ` from source
+Alternatively, you can install `AutoGPTQ` from source:
 ```bash Source Install
 !pip install optimum tiktoken gekko einops transformers_stream_generator accelerate
 !pip install git+https://github.com/AutoGPTQ/AutoGPTQ@v0.7.1
 ```
-\*Note: Building the source install can take around 20 minutes
+> Note: Building the source install can take around 20 minutes.
 
 After installing, you can use the `int4` quantized model like this, as long as you have over 11GB of VRAM:
 

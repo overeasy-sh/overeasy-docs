@@ -71,11 +71,11 @@ flowchart TB
     direction TB
     subgraph NODE1
         direction LR
-        I1("IMAGE <img src='/agents//image-agents/images/people.png';' />") ~~~ D1(DATA)
+        I1("IMAGE <img src='/agents/image-agents/images/people.png' />") ~~~ D1(DATA)
     end
     subgraph NODE2
         direction LR
-        I2("IMAGE <img src='/agents//image-agents/images/people.png';' />") ~~~ D2(Detections.BOUNDING_BOX)
+        I2("IMAGE <img src='/agents/image-agents/images/people.png';' />") ~~~ D2(Detections.BOUNDING_BOX)
     end
     NODE1 --BoundingBoxSelectAgent--> NODE2
 ```

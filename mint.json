@@ -15,6 +15,7 @@
       "to": "#a6a5f2"
     }
   },
+  "versions": ["v.0.1.0"],
   "topbarLinks": [
     {
       "name": "Support",
@@ -27,9 +28,9 @@
   },
   "anchors": [
     {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
+      "name": "Github",
+      "icon": "github",
+      "url": "https://github.com/overeasy-sh/overeasy"
     }
   ],
   "navigation": [
