@@ -2,8 +2,8 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Overeasy",
   "logo": {
-    "dark": "/logo/full_logo_dark.svg",
-    "light": "/logo/full_logo_light.svg"
+    "dark": "/logo/full_logo-02.svg",
+    "light": "/logo/full_logo-01.svg"
   },
   "favicon": "/overeasy-favicon.svg",
   "colors": {
