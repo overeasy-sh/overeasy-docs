@@ -1,6 +1,50 @@
 ---
 title: 'Grounding DINO'
-description: ''
+description: 'Dynamic INteractive Object detection'
 ---
 
 ## Overview
+
+Grounding DINO (Dynamic INteractive Object detection) is a model designed to perform object detection in images based on textual descriptions. It leverages deep learning techniques to understand and locate objects described by text within an image.
+
+<ParamField path="GroundingDINO()">
+The `GroundingDINO` class encapsulates the functionality of the Grounding DINO model, providing methods for loading the model, detecting objects based on textual descriptions, and managing resources.
+</ParamField>
+
+## Methods
+
+<ParamField path="GroundingDINO.detect(image, classes)">
+- `detect(image: Union[np.ndarray, Image.Image], classes: List[str])-> Detections`: 
+
+This method detects objects in the provided `image` based on the `classes` described in text. 
+ Returns a BoundingBox [`Detections`](/types/detections) object.
+</ParamField>
+
+## When to use?
+
+One of the main benifits of Grounding DINO is that it provides a good balance, between speed and accuracy, which makes it a good choice for annotating datasets.
+However, it may miss out on finer details compared to slower models like [OwlV2](/models/bbox/owlv2).
+
+## Example Usage
+
+```bash
+wget -O kites.jpg "https://github.com/overeasy-sh/overeasy/blob/main/examples/kites.jpg?raw=true"
+```
+
+```python
+from overeasy import *
+from PIL import Image
+workflow = Workflow([
+BoundingBoxSelectAgent(classes=["butterfly kite"], model=GroundingDino()),
+])
+
+image = Image.open("./kites.jpg")
+results, graph = workflow.execute(image)
+workflow.visualize(graph)
+```
+
+<Frame caption="Note how the model missed the smaller butterfly kite in the back">
+    <img src="/models/bbox/kites_detected_dino.jpg" />
+</Frame>
+
+For more information on Grounding DINO, refer to the [original paper](https://arxiv.org/abs/2303.05499).

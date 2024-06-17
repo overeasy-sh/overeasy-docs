@@ -1,0 +1,62 @@
+---
+title: 'CLIP'
+description: 'Contrastive Language-Image Pretrained Model'
+---
+
+## CLIP Class Documentation
+
+### Overview
+
+The `CLIP` class is designed to perform image classification using the CLIP (Contrastive Language-Image Pretraining) model. It leverages a pre-trained model from OpenAI to classify images into predefined categories based on textual descriptions.
+
+### Methods
+
+#### `__init__(self, model_card: str = "openai/clip-vit-large-patch14")`
+Constructor for the `CLIP` class.
+- **Parameters:**
+  - `model_card`: A string identifier for the pre-trained CLIP model to be used. Default is `"openai/clip-vit-large-patch14"`.
+
+#### `load_resources(self)`
+Loads the necessary resources for the model including the processor and the model itself from the specified `model_card`.
+
+#### `release_resources(self)`
+Releases the loaded resources to free up memory. This is particularly useful when working with limited memory resources or in a GPU environment to clear the cache.
+
+#### `classify(self, image: Image.Image, classes: list) -> Detections`
+Classifies an image into one of the provided classes.
+- **Parameters:**
+  - `image`: An instance of `Image.Image` to be classified.
+  - `classes`: A list of strings representing the class labels to classify the image against.
+- **Returns:**
+  - A `Detections` object containing:
+    - `xyxy`: Bounding box coordinates (always zero as CLIP does not provide localization).
+    - `class_ids`: Array containing the index of the predicted class.
+    - `confidence`: Array containing the confidence score of the prediction.
+    - `classes`: Array of class labels provided.
+    - `detection_type`: Type of detection, which is `DetectionType.CLASSIFICATION` in this case.
+
+## Example Usage
+
+```bash
+wget -O basketball.png "https://github.com/overeasy-sh/overeasy/blob/main/examples/basketball.png?raw=true"
+```
+
+```python
+from overeasy import *
+from PIL import Image
+workflow = Workflow([
+  ClassificationAgent(classes=["basketball", "soccer", "football"], model=CLIP()),
+])
+
+image = Image.open("./basketball.png")
+results, graph = workflow.execute(image)
+workflow.visualize(graph)
+```
+
+
+<Frame>
+    <img src="/models/bbox/kites_detected.jpg" />
+</Frame>
+
+For more information on OwlV2, refer to the [original paper](https://arxiv.org/abs/2306.09683).
+>

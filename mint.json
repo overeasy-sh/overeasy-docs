@@ -111,6 +111,12 @@
           ]
         }, 
         {
+          "group": "Embedding Models",
+          "pages": [
+            "models/embedding-models/CLIP"
+          ]
+        }, 
+        {
           "group": "LLMs",
           "pages": [
             "models/LLMs/GPTVision",

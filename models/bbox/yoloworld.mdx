@@ -1,6 +1,55 @@
 ---
 title: 'YOLO-World'
-description: ''
+description: 'Real-Time Open-Vocabulary Object Detections'
 ---
-
 ## Overview
+
+YOLO-World is a series of models that extend the YOLO (You Only Look Once) framework to open-world settings, allowing for dynamic object detection across a variety of environments. These models are designed to handle a wide range of object types and are particularly useful for applications requiring robust and real-time object detection.
+
+<ParamField path="YOLOWorld(model: str)">
+
+The `YOLOWorld` class encapsulates the functionality of the YOLO-World models, providing methods for loading the model, detecting objects based on textual descriptions, and managing resources.
+</ParamField>
+
+
+<ParamField path="model" default="yolov8l-worldv2">
+ Specifies which version of the model to load the `s` models are less accurate and faster will the `l` models are more accurate but slower.
+ 
+ Valid options include `"yolov8s-worldv2"`, `"yolov8m-worldv2"`, `"yolov8l-worldv2"`, `"yolov8s-world"`, `"yolov8m-world"`, and `"yolov8l-world"`.
+</ParamField>
+
+## Methods
+
+<ParamField path="YOLOWorld.detect(image, classes)">
+- `detect(image: Union[np.ndarray, Image.Image], classes: List[str])-> Detections`: 
+
+This method detects objects in the provided `image` based on the `classes` described in text. 
+ Returns a BoundingBox [`Detections`](/types/detections) object.
+</ParamField>
+
+## When to use?
+
+YOLO-World models are the fastest among the available models and the only ones capable of performing real-time detection, making them ideal for scenarios where speed is critical, such as in video surveillance or autonomous driving. 
+They provide a good balance between speed and accuracy but may struggle with labels that are not similar to the standard COCO labels.
+
+## Example Usage
+
+```bash
+wget -O kites.jpg "https://github.com/overeasy-sh/overeasy/blob/main/examples/kites.jpg?raw=true"
+```
+
+```python
+from overeasy import *
+from PIL import Image
+workflow = Workflow([
+BoundingBoxSelectAgent(classes=["butterfly kite"], model=YOLOWorld()),
+])
+
+image = Image.open("./kites.jpg")
+results, graph = workflow.execute(image)
+workflow.visualize(graph)
+```
+
+<Frame caption="Note how the model did not filter out the butterfly kite, but instead just selected all the kites">
+    <img src="/models/bbox/kites_detected_yolo.jpg" />
+</Frame>
