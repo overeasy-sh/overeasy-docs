@@ -1,0 +1,158 @@
+---
+title: 'GPT-Vision & GPT'
+description: 'Overview of OpenAI GPT models with a focus on image input capabilities'
+---
+
+<ParamField path="GPT()">
+</ParamField>
+The `GPT` class is designed for text-to-text interactions, utilizing models from the Generative Pre-trained Transformer series. These models are adept at understanding and generating text based on the input provided.
+
+## Initialization 
+<ParamField path="api_key" type="string" default="os.getenv(OPENAI_API_KEY)">
+  Your OpenAI API key. If not provided, it will attempt to use the OPENAI_API_KEY environment variable.
+</ParamField>
+<ParamField path="model" type="string" default="gpt-3.5-turbo">
+    Model name of one of open AI's supported models
+</ParamField>
+
+```python
+GPT(api_key="sk-...", model="gpt-4-turbo")
+```
+
+## Methods:
+
+- `GPT.prompt(query: str) -> str` 
+
+    Takes a text query and returns the model's text response.
+
+
+<ParamField path="GPTVision()">
+</ParamField>
+
+The `GPTVision` class extends the capabilities of `GPT` to include handling image inputs, making it suitable for image-to-text tasks. 
+This class is part of the multimodal models that can process both text and images.
+
+## Initialization:
+- api_key: Optional. Your OpenAI API key. If not provided, it will attempt to use the OPENAI_API_KEY environment variable.
+model: The model name, default is "gpt-4o". It should be one of the models that support image inputs.
+
+## Methods:
+
+- `GPTVision.prompt(query: str) -> str` 
+
+    Sends the prompt and returns the respone
+- `GPTVision.prompt_with_image(image: Image.Image, query: str) -> str` 
+
+    Sends the prompt and image to the model and returns the response.
+- `GPTVision.parse_text(image: Image.Image) -> str` 
+
+    Returns all text extracted from an image
+
+
+
+## When to use
+`GPT-4o` and `GPT-4v` are the leading Vision Language models and  are capable of understanding relatively fine details in images.
+Although when scaling to datasets of millions of images, these models can become prohibitively expensive. 
+
+Generally, `GPT-4o` is the best model to use for image-to-text tasks, and is cheaper than `GPT-4v`.
+
+## Usage Scenarios
+<Accordion title="Generating Structured Output">
+```bash
+wget ...
+```
+
+```python
+from overeasy import *
+from pydantic import BaseModel
+
+class License(BaseModel):
+    license_number: str
+    expiration_date: str
+    state: str
+    data_of_birth: str
+    address: str
+    first_name: str
+    last_name: str
+    
+workflow = Workflow([
+    InstructorImageAgent(response_model=License, model="gpt-4o")
+])
+
+image = Image.open("./ima_cardholder.jpg")
+result, graph = workflow.execute(image)
+print(repr(result[0].data))
+```
+
+Generated output: 
+<div class="vertical-frame bg-gray-50/5 dark:bg-gray-800/25">
+    <img src="models/LLMs/ima_cardholder.jpg" class="rounded mx-auto mb-0"/>
+    <span class="w-full">
+    ```python
+    License(
+        license_number='I1234568', 
+        expiration_date='08/31/2014', 
+        state='California', 
+        data_of_birth='08/31/1977', 
+        address='2570 24th Street, Anytown, CA 95818', 
+        first_name='Ima', 
+        last_name='Cardholder'
+    )
+    ```
+    </span>
+</div>
+
+
+</Accordion>
+
+
+<Accordion title="Image Captioning">
+    ```bash
+    wget ...
+    ```
+
+    ```python
+    from overeasy import *
+    workflow = Workflow([
+        DenseCaptioningAgent(model=GPTVision(model="gpt-4o"))
+    ])
+    result, graph = workflow.execute(Image.open("./eiffel.png"))
+    print(result[0].data)
+    ```
+
+    <Frame caption="The image is a black-and-white photograph featuring a man in a suit seemingly interacting with the Eiffel Tower. The man stands in the foreground with one arm extended, appearing to be touching the top of the Eiffel Tower with his hand. This perspective trick creates the illusion that he is much larger than the tower itself. The background shows the full view of the Eiffel Tower, with the base and the surrounding area visible. The photo is taken in a way that makes it look like the man is playfully leaning on or manipulating the tower due to the forced perspective technique. The man is dressed in a suit and tie, looking down at his hand with a thoughtful or playful expression. The setting is likely the Champ de Mars, a large public greenspace near the Eiffel Tower in Paris, France.">
+        <img src="models/LLMs/eiffel.png" />
+    </Frame>
+</Accordion>
+
+
+
+<Accordion title="Visual Question Answering">
+```bash
+wget ...
+```
+
+```python
+from overeasy import *
+workflow = Workflow([
+    BinaryChoiceAgent("Do the Celtics have possession of the ball?", model=GPTVision(model="gpt-4o"))
+])
+image=Image.open("bball.png")
+result, graph = workflow.execute(image)
+print(result[0].data.class_names)
+```
+
+<Frame caption="Q: Do the Celtics have possession of the ball? A: No">
+    <img src="models/LLMs/bball.png" />
+</Frame>
+</Accordion>
+
+
+
+
+## Limitations
+Many GPT Visual models have relatively strict guard rails around inputs/photos of people so your requests may get screened out if they are related to these topics.
+These models also generally struggle with spatial reasoning(i.e. is object A in front of object B?).
+
+For more details check the OpenAI [docs](https://platform.openai.com/docs/guides/vision/limitations)
+

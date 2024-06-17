@@ -1,6 +1,53 @@
 ---
 title: 'OWLv2'
-description: ''
+description: 'Open-World Language-guided Visual representation for object detection'
 ---
 
 ## Overview
+
+OwlV2 (Open-World Language-guided Visual representation) is a model that combines natural language processing with computer vision to enable open-world understanding and object detection based on textual descriptions. It is based on the paper: [OWL-ViT: Open-World Object Detection with Vision Transformers](https://arxiv.org/abs/2305.19004).
+
+<ParamField path="OwlV2()">
+  The `OwlV2` class is a wrapper around the pre-trained OWLv2 model from Hugging Face. It provides an interface for loading the model, detecting objects in an image based on a list of candidate classes, and returning the detections as bounding boxes.
+
+</ParamField>
+
+## Methods
+
+<ParamField path="OwlV2.detect()">
+  - `detect(self, image: Image.Image, classes: List[str]) -> Detections`: Detects objects in the given `image` based on the provided list of `classes`. Returns the detections as a `Detections` object containing bounding box coordinates, confidence scores, and class IDs.
+</ParamField>
+
+## When to use?
+OwlV2 excels in language understanding for *niche* bounding box tasks. 
+It was pretrained on a web-scale corpus of 10B+ images, making it particularly effective for detecting specific or unusual objects that are not typically found in standard datasets like COCO.
+
+OwlV2 does often struggle with the problem of overpredicting bounding boxes or predicting multiple boxes for a single instance, so its reccomended that you chain this model with [Non Max Suppression](/agents/detection-agents/nms-agent) to get cleaner results. 
+
+## Example Usage
+
+```bash
+wget https://github.com/overeasy-sh/overeasy/blob/main/examples/kites.jpg
+```
+
+```python
+from overeasy import *
+from PIL import Image
+workflow = Workflow([
+  BoundingBoxSelectAgent(classes=["butterfly kite"], model=OwlV2()),
+  NMSAgent(iou_threshold=0.8, score_threshold=0.6),
+  SplitAgent(),
+])
+
+image = Image.open("./kites.jpg")
+results, graph = workflow.execute(image)
+workflow.visualize(graph)
+```
+
+
+<Frame>
+    <img src="/models/bbox/kites_detected.jpg" />
+</Frame>
+
+For more information on OwlV2, refer to the [original paper](https://arxiv.org/abs/2306.09683).
+>
