@@ -42,7 +42,8 @@
         {
           "group": "Extras",
           "pages": [
-            "extra-installation"
+            "extra-installation",
+            "modal-setup"
           ]
         }
       ]

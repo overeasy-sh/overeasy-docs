@@ -1,0 +1,77 @@
+---
+title: '📦 Modal setup'
+description: 'Modal labs lets you run containerized Python code with GPUs.'
+---
+
+First follow the Modal setup instructions found [here](https://modal.com/docs/guide).
+
+<Steps>
+  <Step title="Setting up your Image">
+    Overeasy requires a few dependencies that are not available in the base Python image.
+    In addition, to reduce cold start times its recommended to cache model weights in your image.
+
+```python image.py
+import modal
+overeasy_image = (
+    Image.debian_slim(python_version="3.11")
+    .run_commands("apt-get update && apt-get install -y ffmpeg libsm6 libxext6")
+    .pip_install("overeasy==0.1.6")
+    .run_commands(
+        "python -c 'import overeasy as ov; ov.models.warmup_models();'", gpu="any"
+    )
+    .env({
+        "ANTHROPIC_API_KEY": "sk-...",
+        "GOOGLE_API_KEY": "...",
+        "OPENAI_API_KEY": "sk-..."
+    })
+)
+```
+
+</Step>
+
+<Step title="Run Overeasy Code">
+Then you can run overeasy code remotely on a Modal container like this:
+
+```python overeasy_script.py
+import modal
+from overeasy import *
+from pydantic import BaseModel
+from PIL import Image
+
+app = modal.App() # Initialize modal app
+
+@app.function(image=overeasy_image, gpu="a100") # Run the function remotely on a GPU
+def run_overeasy(image: Image.Image):
+    class PPE(BaseModel):
+        hardhat: bool
+
+    workflow = Workflow([
+        BoundingBoxSelectAgent(classes=["person"]),
+        NMSAgent(iou_threshold=0.5, score_threshold=0),
+        SplitAgent(),
+        DenseCaptioningAgent(),
+        InstructorTextAgent(response_model=PPE),
+        ToClassificationAgent(fn=lambda x: "has ppe" if x.hardhat else "no ppe"),
+        JoinAgent()
+    ])
+
+    results, graph = workflow.execute(image)
+    return results
+
+@app.local_entrypoint() # Run the function locally
+def main():
+    image_path = "./examples/construction_workers.jpg"
+    image = Image.open(image_path)
+    results = run_overeasy.remote(image)
+    results[0].visualize().save("modal_result.jpg")
+
+```
+
+
+```bash
+
+modal run overeasy_script.py
+```
+
+</Step>
+</Steps>
